@@ -22,7 +22,7 @@ public class RLPlayer extends Player {
      *     * @param seed - random seed for this player.
      * @param pId  - this player's ID.
      */
-    protected RLPlayer(long seed, int pId) {
+     RLPlayer(long seed, int pId) {
         super(seed, pId);
         random = new Random();
         ArrayList<Types.ACTIONS> actionsList = Types.ACTIONS.all();
@@ -59,7 +59,6 @@ public class RLPlayer extends Player {
             GameState state = currentState.copy();
             ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
             stop = true;
-
             //Get reward, get new state prime, update Q value with bellman equation
             //Keep original state, action, state reached after action, reward and if game ended or not in storage
             //stop after X amount of time
