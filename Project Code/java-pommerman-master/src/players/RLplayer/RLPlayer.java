@@ -41,7 +41,10 @@ public class RLPlayer extends Player {
 
     @Override
     public Player copy() {
-        return null;
+
+        RLPlayer copy =  new RLPlayer(this.seed, this.playerID);
+        copy.setCurrentGameState(this.currentState);
+        return copy;
     }
 
     private int calculateReward(){
@@ -56,6 +59,7 @@ public class RLPlayer extends Player {
             GameState state = currentState.copy();
             ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
             stop = true;
+
             //Get reward, get new state prime, update Q value with bellman equation
             //Keep original state, action, state reached after action, reward and if game ended or not in storage
             //stop after X amount of time
