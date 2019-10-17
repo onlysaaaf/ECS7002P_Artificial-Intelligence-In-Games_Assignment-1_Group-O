@@ -47,29 +47,7 @@ public class RLPlayer extends Player {
         return copy;
     }
 
-    private int calculateReward(){
-        int newQ = random.nextInt();
-        int selectedAction = random.nextInt(actions.length);   //Get current state, execute action randomly or with neural net
-        int reward = 0;
 
-        boolean stop = false;
-
-        while(!stop){
-
-            GameState state = currentState.copy();
-            ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
-            stop = true;
-            //Get reward, get new state prime, update Q value with bellman equation
-            //Keep original state, action, state reached after action, reward and if game ended or not in storage
-            //stop after X amount of time
-            //TODO
-        }
-
-
-        return newQ;
-
-
-    }
 
     private void setCurrentGameState(GameState gs)
     {
