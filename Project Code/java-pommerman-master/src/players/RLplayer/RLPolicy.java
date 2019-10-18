@@ -4,6 +4,7 @@ import core.GameState;
 import utils.Types;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class RLPolicy {
     int[] dimSize;
@@ -17,12 +18,17 @@ public class RLPolicy {
 
     private int reward = 100;
 
-    Types.ACTIONS getBestAction(){
-        return null;
-    }
+    private double getPolicyFromState(GameState g){
+        ArrayList<Types.ACTIONS> actionsList = Types.ACTIONS.all();
+        actions = new Types.ACTIONS[actionsList.size()];
+        double maxVal = Double.MAX_VALUE;
 
-    GameState getNextState(){
-        return null;
+        GameState copy = g.copy();
+
+        //pick action to move to state that has maximum Q value
+        //TODO
+
+        return maxVal;
     }
 
 

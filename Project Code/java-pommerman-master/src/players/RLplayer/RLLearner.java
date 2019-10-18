@@ -42,7 +42,7 @@ public class RLLearner {
         ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
         int numOfActions = actions.length;
         int index = random.nextInt(numOfActions);
-        double newQ =  RLPolicy.getPolicyFromState();
+        double newQ =  RLPolicy.getPolicyFromState(currentState);
             //stop = true;
             //Get reward, get new state prime, update Q value with bellman equation
             //Keep original state, action, state reached after action, reward and if game ended or not in storage
