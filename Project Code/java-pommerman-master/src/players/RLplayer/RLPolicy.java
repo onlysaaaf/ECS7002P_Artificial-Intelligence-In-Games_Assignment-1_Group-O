@@ -25,42 +25,8 @@ public class RLPolicy {
         return null;
     }
 
-    private double[] myQValues( GameState state ) {
 
 
-        return null;
-    }
 
-    public double[] getQValuesAt( int[] state ) {
-
-        int i;
-        Object curTable = qValuesTable;
-        double[] returnValues;
-
-
-        return null;
-    }
-
-
-    public void setQValue( int[] state, int action, double newQValue ) {
-
-        qValues = myQValues( state );
-        Array.setDouble( qValues, action, newQValue );
-    }
-
-    public double getMaxQValue( int[] state ) {
-
-        double maxQ = -Double.MAX_VALUE;
-
-        return maxQ;
-    }
-
-    public double getQValue( int[] state, int action ) {
-
-        double qValue = 0;
-
-
-        return qValue;
-    }
 
 }
