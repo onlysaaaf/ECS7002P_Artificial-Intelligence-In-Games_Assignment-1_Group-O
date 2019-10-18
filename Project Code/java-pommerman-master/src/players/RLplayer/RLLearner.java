@@ -16,11 +16,16 @@ public class RLLearner {
     private Random random;
     private Types.ACTIONS[] actions;
 
+
+
+    private RLPolicy policy;
+
     RLLearner (GameState g){
         currentState = g;
         random = new Random();
         ArrayList<Types.ACTIONS> actionsList = Types.ACTIONS.all();
         actions = new Types.ACTIONS[actionsList.size()];
+        policy = new RLPolicy();
     }
 
     public void learn(){
@@ -28,24 +33,21 @@ public class RLLearner {
     }
 
     //calculate reward for state here
-    private int calculateReward(){
-        int newQ = random.nextInt();
-        int selectedAction = random.nextInt(actions.length);   //Get current state, execute action randomly or with neural net
+    private double calculateQ(){
         int reward = 0;
 
         boolean stop = false;
 
-        while(!stop){
-
-            GameState state = currentState.copy();
-            ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
-            stop = true;
+        GameState state = currentState.copy();
+        ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
+        int numOfActions = actions.length;
+        int index = random.nextInt(numOfActions);
+        double newQ =  RLPolicy.getPolicyFromState();
+            //stop = true;
             //Get reward, get new state prime, update Q value with bellman equation
             //Keep original state, action, state reached after action, reward and if game ended or not in storage
             //stop after X amount of time
             //TODO
-        }
-
         return newQ;
 
 

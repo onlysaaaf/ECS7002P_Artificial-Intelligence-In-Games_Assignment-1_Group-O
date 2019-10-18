@@ -12,6 +12,11 @@ public class RLPolicy {
     GameState[] states;
     Types.ACTIONS[] actions;
 
+    private double alpha = 0.1; //Learning rate
+    private double gamma = 0.3; //Eagerness
+
+    private int reward = 100;
+
     Types.ACTIONS getBestAction(){
         return null;
     }
@@ -20,7 +25,7 @@ public class RLPolicy {
         return null;
     }
 
-    private double[] myQValues( int[] state ) {
+    private double[] myQValues( GameState state ) {
 
 
         return null;
