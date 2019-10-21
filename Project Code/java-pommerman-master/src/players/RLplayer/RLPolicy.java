@@ -20,7 +20,7 @@ public class RLPolicy {
 
     private int reward = 100;
 
-    private double getPolicyFromState(GameState g){
+    public double getPolicyFromState(GameState g){
         ArrayList<Types.ACTIONS> actionsList = Types.ACTIONS.all();
         actions = new Types.ACTIONS[actionsList.size()];
         double maxVal = Double.MAX_VALUE;

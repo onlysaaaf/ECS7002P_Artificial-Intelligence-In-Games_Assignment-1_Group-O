@@ -28,8 +28,10 @@ public class RLLearner {
         policy = new RLPolicy();
     }
 
-    public void learn(){
+    public int learn(){
         //apply qlearning algorithm here
+        //todo
+        return 0;
     }
 
     //calculate reward for state here
@@ -42,7 +44,7 @@ public class RLLearner {
         ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
         int numOfActions = actions.length;
         int index = random.nextInt(numOfActions);
-        double newQ =  RLPolicy.getPolicyFromState(currentState);
+        double newQ =  policy.getPolicyFromState(currentState);
             //stop = true;
             //Get reward, get new state prime, update Q value with bellman equation
             //Keep original state, action, state reached after action, reward and if game ended or not in storage
