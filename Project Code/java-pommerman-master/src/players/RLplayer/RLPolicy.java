@@ -1,6 +1,7 @@
 package players.RLplayer;
 
 import core.GameState;
+import players.heuristics.WinScoreHeuristic;
 import utils.Types;
 
 import java.lang.reflect.Array;
@@ -14,23 +15,29 @@ public class RLPolicy {
     GameState[] states;
     Types.ACTIONS[] actions;
     Random r = new Random();
+    public WinScoreHeuristic heuristic = new WinScoreHeuristic();
 
     private double alpha = 0.1; //Learning rate
     private double gamma = 0.3; //Eagerness
-
-    private int reward = 100;
+    private double reward = 0;
 
     public double getPolicyFromState(GameState g){
         ArrayList<Types.ACTIONS> actionsList = Types.ACTIONS.all();
         actions = new Types.ACTIONS[actionsList.size()];
-        double maxVal = Double.MAX_VALUE;
-        double eval = 0;
-
+        double maxQVal = Double.MIN_VALUE;
+        double Qval = Double.MIN_VALUE;
+        GameState sPrime = null;
         GameState copy = g.copy();
 
         for(int i =0; i<actions.length; ++i){
             GameState next = (roll(copy,actions[i]));
-            evaluate(next);
+            Qval = evaluate(next,Qval,maxQVal);
+            if(Qval > maxQVal)
+                maxQVal = Qval;
+            if (next.isTerminal()){
+                sPrime = next;
+                break;
+            }
 
         }
 
@@ -38,7 +45,7 @@ public class RLPolicy {
         //pick action to move to state that has maximum Q value
         //TODO
 
-        return maxVal;
+        return maxQVal;
     }
 
     private GameState roll(GameState gs, Types.ACTIONS act)
@@ -65,8 +72,10 @@ public class RLPolicy {
 
     }
 
-    private Double evaluate(GameState gs){
-        return null;
+    private Double evaluate(GameState gs, double Qval, double maxQval){
+        reward = heuristic.evaluateState(gs);
+
+        return Qval + alpha*(reward+ gamma * maxQval - Qval) ;
     }
 
 
