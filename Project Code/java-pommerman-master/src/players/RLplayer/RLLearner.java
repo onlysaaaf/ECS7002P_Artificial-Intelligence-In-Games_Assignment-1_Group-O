@@ -50,16 +50,14 @@ public class RLLearner {
         int remainingLimit = 5;
         int fmCallsCount = 0;
         double newQ = Double.MIN_VALUE;
-        GameState state = currentState.copy();
-
+        GameState copyState = currentState.copy();
 
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
         ect.setMaxTimeMillis(40);
 
 
         while (!stop) {
-
-            int numOfActions = actions.length;
+            states.add(copyState);
             newQ = policy.getPolicyFromState(currentState);
             ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
             //TODO
@@ -78,11 +76,13 @@ public class RLLearner {
                 stop = (fmCallsCount + params.rollout_depth) > params.num_fmcalls;
             }
 
-
+            qValues.add(newQ);
 
 
         }
         return newQ;
+
+
 
     }
 }
