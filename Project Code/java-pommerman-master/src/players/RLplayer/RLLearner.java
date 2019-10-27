@@ -36,12 +36,11 @@ public class RLLearner {
 
     public int learn(){
         //get action to return
-        int actionToPick = 0;
         GameState copyState = currentState.copy();
 
 
 
-        return actionToPick;
+        return 0;
     }
 
     //calculate reward for state here
@@ -55,6 +54,8 @@ public class RLLearner {
         int remainingLimit = 5;
         int fmCallsCount = 0;
         double newQ = Double.MIN_VALUE;
+        int actionToPick = 0;
+
 
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
         ect.setMaxTimeMillis(40);

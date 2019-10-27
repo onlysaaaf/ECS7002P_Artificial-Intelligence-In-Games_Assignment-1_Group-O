@@ -9,10 +9,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class RLPolicy {
-    int[] dimSize;
-    double[] qValues;
-    private Object qValuesTable;
-    GameState[] states;
     Types.ACTIONS[] actions;
     Random r = new Random();
     public WinScoreHeuristic heuristic = new WinScoreHeuristic();
@@ -20,6 +16,10 @@ public class RLPolicy {
     private double alpha = 0.1; //Learning rate
     private double gamma = 0.3; //Eagerness
     private double reward = 0;
+    int actionToPick = 0;
+    private ArrayList<Double> qValues = new ArrayList<>();
+    private ArrayList<GameState> states = new ArrayList<>();
+
 
     public double getPolicyFromState(GameState g){
         ArrayList<Types.ACTIONS> actionsList = Types.ACTIONS.all();
@@ -31,7 +31,9 @@ public class RLPolicy {
 
         for(int i =0; i<actions.length; ++i){
             GameState next = (roll(copy,actions[i]));
+            states.add(next);
             Qval = evaluate(next,Qval,maxQVal);
+            qValues.add(Qval);
             if(Qval > maxQVal)
                 maxQVal = Qval;
             if (next.isTerminal()){
@@ -78,6 +80,9 @@ public class RLPolicy {
         return Qval + alpha*(reward+ gamma * maxQval - Qval) ;
     }
 
+    public int getActionToPick(){
+        return actionToPick;
+    }
 
 
 
