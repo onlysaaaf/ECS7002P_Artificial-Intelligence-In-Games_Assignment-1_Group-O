@@ -38,11 +38,9 @@ public class RLLearner {
         //get action to return
         int actionToPick = 0;
         GameState copyState = currentState.copy();
-        for (int i = 0; i<actions.length; i ++){
-            states.add(copyState);
-            qValues.add(calculateQ(copyState));
-            copyState.next(actions);
-        }
+
+
+
         return actionToPick;
     }
 
@@ -81,7 +79,7 @@ public class RLLearner {
                 fmCallsCount += params.rollout_depth;
                 stop = (fmCallsCount + params.rollout_depth) > params.num_fmcalls;
             }
-
+            qValues.add(newQ);
 
 
         }
