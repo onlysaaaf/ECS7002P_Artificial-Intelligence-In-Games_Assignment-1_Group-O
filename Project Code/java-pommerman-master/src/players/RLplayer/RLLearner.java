@@ -56,7 +56,7 @@ public class   RLLearner {
     }
 
 
-    public int learn(){
+    public void learn(){
         //get action to return
         GameState copyState = currentState.copy();
         Vector2d currentpos = copyState.getPosition();
@@ -64,15 +64,20 @@ public class   RLLearner {
         int currentx = currentpos.x;
         Pair currentPair = new Pair(currentx,currenty);
         double Qval = qVals.get(currentPair);
+        //int bestAction = 0;
 
         double newQ = policy.evaluate(copyState, Qval, Double.MAX_VALUE );
         for(Types.ACTIONS a: actionsList){
             GameState next = policy.roll(copyState, a);
             Vector2d nextPos = next.getPosition();
             Pair newPair = new Pair(nextPos.x,nextPos.y);
-            double q = policy.evaluate(next, qVals.get(newPair), Double.MAX_VALUE);
+            double q = policy.evaluate(next, qVals.get(newPair), Double.MAX_VALUE); //Eval new state
             qVals.put(newPair,q);
+
         }
+
+
+
         //for time limit
             //Evaluate current state
 
@@ -84,7 +89,6 @@ public class   RLLearner {
 
 
 
-        return 0;
     }
 
     //calculate reward for state here

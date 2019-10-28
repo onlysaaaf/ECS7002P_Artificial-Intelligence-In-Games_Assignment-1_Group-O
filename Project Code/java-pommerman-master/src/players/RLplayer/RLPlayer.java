@@ -6,11 +6,11 @@ import players.heuristics.AdvancedHeuristic;
 import players.heuristics.CustomHeuristic;
 import players.mcts.SingleTreeNode;
 import utils.ElapsedCpuTimer;
+import utils.Pair;
 import utils.Types;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 
 public class RLPlayer extends Player {
@@ -49,7 +49,17 @@ public class RLPlayer extends Player {
         // Number of actions available
         int num_actions = actions.length;
 
-        int actionToPick = learner.learn();
+        learner.learn();
+
+        if(Types.DEFAULT_VISION_RANGE ==-1){
+            //everything visible
+            Set<Map.Entry<Pair, Double>> qvalues = RLLearner.qVals.entrySet();
+
+        }else if(Types.DEFAULT_VISION_RANGE > 1) {
+            //Types.whatever  = vision range
+        }else{
+            return null;
+        }
 
         return actions[random.nextInt(actions.length)];
     }
