@@ -1,5 +1,7 @@
 import core.Game;
 import players.*;
+import players.RLplayer.RLPlayer;
+import utils.Pair;
 import utils.Types;
 import players.rhea.utils.Constants;
 import players.mcts.MCTSPlayer;
@@ -9,6 +11,7 @@ import players.rhea.utils.RHEAParams;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Test {
 
@@ -18,8 +21,25 @@ public class Test {
         long seed = System.currentTimeMillis();
         int boardSize = Types.BOARD_SIZE;
         Types.GAME_MODE gameMode = Types.GAME_MODE.FFA;
-        boolean useSeparateThreads = false;
+        boolean useSeparateThreads = false;/*
+         HashMap<Pair,Double> qvals = new HashMap<Pair,Double>();
 
+         Pair<Integer,Integer> positions;
+
+            for(int x = 0; x<11; x++){
+                for(int y = 0; y<11; y++){
+                    qvals.put(new Pair<>(x,y), Double.MIN_VALUE);
+
+                }
+                System.out.println(" ");
+            }
+
+            for (Pair p: qvals.keySet()){
+                String k = p.toString();
+                String value = qvals.get(p).toString();
+                System.out.println(k + " " + value);
+            }
+   */
         Game game = new Game(seed, boardSize, Types.GAME_MODE.FFA, "");
 
         // Key controllers for human player s (up to 2 so far).
@@ -37,7 +57,8 @@ public class Test {
         RHEAParams rheaParams = new RHEAParams();
         rheaParams.heurisic_type = Constants.CUSTOM_HEURISTIC;
 
-        players.add(new MCTSPlayer(seed, playerID++, mctsParams));
+        //players.add(new MCTSPlayer(seed, playerID++, mctsParams));
+        players.add(new RLPlayer(seed,playerID++));
         //players.add(new MCTSPlayer(seed, playerID++, mctsParams));
 
 //        players.add(new SimplePlayer(seed, playerID++));

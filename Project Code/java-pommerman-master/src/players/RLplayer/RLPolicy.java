@@ -1,6 +1,7 @@
 package players.RLplayer;
 
 import core.GameState;
+import players.heuristics.CustomHeuristic;
 import players.heuristics.WinScoreHeuristic;
 import utils.Types;
 
@@ -11,7 +12,6 @@ import java.util.Random;
 public class RLPolicy {
     Types.ACTIONS[] actions;
     Random r = new Random();
-    public WinScoreHeuristic heuristic = new WinScoreHeuristic();
 
     private double alpha = 0.1; //Learning rate
     private double gamma = 0.3; //Eagerness
@@ -50,7 +50,7 @@ public class RLPolicy {
         return maxQVal;
     }
 
-    private GameState roll(GameState gs, Types.ACTIONS act)
+    public GameState roll(GameState gs, Types.ACTIONS act)
     {
         //Simple, all random first, then my position.
         int nPlayers = 4;
@@ -74,7 +74,8 @@ public class RLPolicy {
 
     }
 
-    private Double evaluate(GameState gs, double Qval, double maxQval){
+    public Double evaluate(GameState gs, double Qval, double maxQval){
+        CustomHeuristic heuristic = new CustomHeuristic(gs);
         reward = heuristic.evaluateState(gs);
 
         return Qval + alpha*(reward+ gamma * maxQval - Qval) ;

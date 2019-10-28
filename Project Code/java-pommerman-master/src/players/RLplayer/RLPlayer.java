@@ -26,13 +26,17 @@ public class RLPlayer extends Player {
      *     * @param seed - random seed for this player.
      * @param pId  - this player's ID.
      */
-     RLPlayer(long seed, int pId) {
+    public RLPlayer(long seed, int pId) {
         super(seed, pId);
         random = new Random();
         ArrayList<Types.ACTIONS> actionsList = Types.ACTIONS.all();
         actions = new Types.ACTIONS[actionsList.size()];
         params = new RLParams();
         learner = new RLLearner(this.currentState);
+        //System.out.println(RLLearner.qVals.isEmpty());
+        if(RLLearner.qVals.isEmpty() ) {
+            RLLearner.initialiseMap();
+        }
     }
 
     @Override
