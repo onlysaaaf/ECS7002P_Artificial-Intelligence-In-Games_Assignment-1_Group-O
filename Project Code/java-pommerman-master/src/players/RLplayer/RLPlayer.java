@@ -54,7 +54,8 @@ public class RLPlayer extends Player {
         if(Types.DEFAULT_VISION_RANGE ==-1){
             //everything visible
             Set<Map.Entry<Pair, Double>> qvalues = RLLearner.qVals.entrySet();
-
+            System.out.println("set");
+            System.out.println(qvalues);
         }else if(Types.DEFAULT_VISION_RANGE > 1) {
             //Types.whatever  = vision range
         }else{
