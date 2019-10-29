@@ -37,6 +37,7 @@ public class RLPlayer extends Player {
         if(RLLearner.qVals.isEmpty() ) {
             RLLearner.initialiseMap();
         }
+
     }
 
     @Override
@@ -48,8 +49,10 @@ public class RLPlayer extends Player {
 
         // Number of actions available
         int num_actions = actions.length;
+        currentState = gs;
+        GameState copyState = currentState.copy();
 
-        learner.learn();
+        learner.learn(copyState);
 
         if(Types.DEFAULT_VISION_RANGE ==-1){
             //everything visible

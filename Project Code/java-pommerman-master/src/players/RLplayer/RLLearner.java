@@ -56,9 +56,8 @@ public class   RLLearner {
     }
 
 
-    public void learn(){
+    public void learn(GameState copyState){
         //get action to return
-        GameState copyState = currentState.copy();
         Vector2d currentpos = copyState.getPosition();
         int currenty = currentpos.y;
         int currentx = currentpos.x;
