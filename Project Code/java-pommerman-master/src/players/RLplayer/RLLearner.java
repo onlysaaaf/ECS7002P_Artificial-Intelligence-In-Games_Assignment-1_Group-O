@@ -23,8 +23,8 @@ public class   RLLearner {
     private RLParams params;
    // private ArrayList<Double> qValues;
     //private ArrayList<GameState> states;
-     static HashMap<Pair,Double> qVals;
-     static Pair<Integer,Integer> positions;
+     static HashMap<Vector2d,Double> qVals;
+     static Vector2d positions;
     ArrayList<Types.ACTIONS> actionsList;
 
 
@@ -47,7 +47,7 @@ public class   RLLearner {
     static void initialiseMap(){
         for (int x =0; x<Types.BOARD_SIZE;x++){
             for (int y = 0; y<Types.BOARD_SIZE; y++){
-                positions = new Pair<>(x,y);
+                positions = new Vector2d(x,y);
                 qVals.put(positions,Double.MIN_VALUE);
             }
         }
@@ -61,7 +61,7 @@ public class   RLLearner {
         Vector2d currentpos = copyState.getPosition();
         int currenty = currentpos.y;
         int currentx = currentpos.x;
-        Pair currentPair = new Pair(currentx,currenty);
+        Vector2d currentPair = new Vector2d(currentx,currenty);
         double Qval = qVals.get(currentPair);
         //int bestAction = 0;
 
@@ -69,7 +69,7 @@ public class   RLLearner {
         for(Types.ACTIONS a: actionsList){
             GameState next = policy.roll(copyState, a);
             Vector2d nextPos = next.getPosition();
-            Pair newPair = new Pair(nextPos.x,nextPos.y);
+            Vector2d newPair = new Vector2d(nextPos.x,nextPos.y);
             double q = policy.evaluate(next, qVals.get(newPair), Double.MAX_VALUE); //Eval new state
             qVals.put(newPair,q);
 

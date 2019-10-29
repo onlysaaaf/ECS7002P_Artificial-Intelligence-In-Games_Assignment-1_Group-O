@@ -8,9 +8,12 @@ import players.mcts.SingleTreeNode;
 import utils.ElapsedCpuTimer;
 import utils.Pair;
 import utils.Types;
+import utils.Vector2d;
 
 import javax.swing.*;
+import java.security.Policy;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class RLPlayer extends Player {
@@ -20,6 +23,7 @@ public class RLPlayer extends Player {
     private Types.ACTIONS[] actions;
     RLParams params;
     RLLearner learner;
+    RLPolicy policy;
 
     /**
      * Default constructor, to be called in subclasses (initializes player ID and random seed for this agent.
@@ -33,9 +37,14 @@ public class RLPlayer extends Player {
         actions = new Types.ACTIONS[actionsList.size()];
         params = new RLParams();
         learner = new RLLearner(this.currentState);
+        policy = new RLPolicy();
         //System.out.println(RLLearner.qVals.isEmpty());
         if(RLLearner.qVals.isEmpty() ) {
             RLLearner.initialiseMap();
+        }
+        int i = 0;
+        for (Types.ACTIONS act : actionsList) {
+            actions[i++] = act;
         }
 
     }
@@ -56,16 +65,67 @@ public class RLPlayer extends Player {
 
         if(Types.DEFAULT_VISION_RANGE ==-1){
             //everything visible
-            Set<Map.Entry<Pair, Double>> qvalues = RLLearner.qVals.entrySet();
-            System.out.println("set");
-            System.out.println(qvalues);
+            //sort list
+//            for(Map.Entry<Pair,Double> e :qvalues){
+//                System.out.println(e.getKey() + "=>" + e.getValue());
+//            }
+
+            Double bestQVal = Double.MIN_VALUE;
+            Vector2d cord = new Vector2d(0,0);
+           // Map<Vector2d, Double> sorted_qvals = convertToTreeMap(RLLearner.qVals);
+            for (Map.Entry<Vector2d, Double> entry : RLLearner.qVals.entrySet()) {
+               // System.out.println(entry.getKey() + " = " + entry.getValue());
+                if(entry.getValue() > bestQVal){
+                    bestQVal = entry.getValue();
+                    cord = entry.getKey();
+                }
+            }
+
+            copyState = currentState.copy();
+            Types.ACTIONS pickedAction = actions[0];
+            Vector2d bestCord = new Vector2d(gs.getPosition());
+            for(Types.ACTIONS a : actions){
+                GameState next = policy.roll(copyState, a);
+                if(next.getPosition().dist(cord) > bestCord.dist(cord)){
+                    bestCord = next.getPosition();
+                    pickedAction = a;
+                }
+            }
+
+            return pickedAction;
+
+
+
+
+//            System.out.println(bestQVal);
+//            System.out.println(cord);
+
+//            Set<Map.Entry<Vector2d, Double>> qvalues = sorted_qvals.entrySet();
+//            Comparator<Map.Entry<Vector2d,Double>> comparator = new Comparator<Map.Entry<Vector2d, Double>>() {
+//                @Override
+//                public int compare(Map.Entry<Vector2d, Double> pairDoubleEntry, Map.Entry<Vector2d, Double> t1) {
+//                    Vector2d cord1 = pairDoubleEntry.getKey();
+//                    Double qVal = pairDoubleEntry.getValue();
+//                    Vector2d cord2 = t1.getKey();
+//                    Double qVal2 = t1.getValue();
+//                    System.out.println(qVal);
+//                    System.out.println(qVal2);
+//                    System.out.println(Double.compare(qVal,qVal2));
+//
+//
+//                    return Double.compare(qVal,qVal2);
+//                }
+//            };
+
+
+
         }else if(Types.DEFAULT_VISION_RANGE > 1) {
             //Types.whatever  = vision range
         }else{
             return null;
         }
 
-        return actions[random.nextInt(actions.length)];
+        return actions[1];
     }
 
     @Override
@@ -90,5 +150,34 @@ public class RLPlayer extends Player {
 
     private GameState getCurrentState(){
         return  currentState;
+    }
+
+
+    public <K, V> Map<K, V> convertToTreeMap(Map<K, V> hashMap)
+    {
+        Map<K, V>
+                treeMap = hashMap
+                // Get the entries from the hashMap
+                .entrySet()
+
+                // Convert the map into stream
+                .stream()
+
+                // Now collect the returned TreeMap
+                .collect(
+                        Collectors
+
+                                // Using Collectors, collect the entries
+                                // and convert it into TreeMap
+                                .toMap(
+                                        Map.Entry::getKey,
+                                        Map.Entry::getValue,
+                                        (oldValue,
+                                         newValue)
+                                                -> newValue,
+                                        TreeMap::new));
+
+        // Return the TreeMap
+        return treeMap;
     }
 }
