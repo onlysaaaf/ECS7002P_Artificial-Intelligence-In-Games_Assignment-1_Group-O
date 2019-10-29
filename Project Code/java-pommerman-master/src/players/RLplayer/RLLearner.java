@@ -21,8 +21,8 @@ public class   RLLearner {
     private Random random;
     private Types.ACTIONS[] actions;
     private RLParams params;
-    private ArrayList<Double> qValues;
-    private ArrayList<GameState> states;
+   // private ArrayList<Double> qValues;
+    //private ArrayList<GameState> states;
      static HashMap<Pair,Double> qVals;
      static Pair<Integer,Integer> positions;
     ArrayList<Types.ACTIONS> actionsList;
@@ -37,8 +37,8 @@ public class   RLLearner {
         actions = new Types.ACTIONS[actionsList.size()];
         policy = new RLPolicy();
          params = new RLParams();
-         qValues = new ArrayList<>();
-         states = new ArrayList<>();
+         //qValues = new ArrayList<>();
+       //  states = new ArrayList<>();
          qVals = new HashMap();
 
 
@@ -110,10 +110,10 @@ public class   RLLearner {
 
 
         while (!stop) {
-            states.add(state);
+           // states.add(state);
             newQ = policy.getPolicyFromState(state);
             ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
-            qValues.add(newQ);
+         //   qValues.add(newQ);
 
             //TODO
 
