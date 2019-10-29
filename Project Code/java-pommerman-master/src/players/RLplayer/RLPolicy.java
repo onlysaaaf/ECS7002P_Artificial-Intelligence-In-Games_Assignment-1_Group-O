@@ -22,8 +22,8 @@ public class RLPolicy {
     Types.ACTIONS[] actions;
     Random r = new Random();
 
-    private double alpha = 1; //Learning rate
-    private double gamma = 0.5; //Eagerness
+    private double alpha = 0.1; //Learning rate
+    private double gamma = 0.2; //Eagerness
     private double reward = 0;
     int actionToPick = 0;
     private ArrayList<Double> qValues = new ArrayList<>();
@@ -150,15 +150,18 @@ public class RLPolicy {
 
             if(!directions.isEmpty()) {
                 //return directionToAction(directions.get(random.nextInt(directions.size())));
+                reward -=1;
             }
             else {
                 //return Types.ACTIONS.ACTION_STOP;
+                reward+=1;
             }
         }
 
         // 3) Lay bomb if we are adjacent to an enemy.
         if(isAdjacentEnemy(items, dist, enemies) && maybeBomb(ammo, blastStrength, items, dist, myPosition)){
             //return Types.ACTIONS.ACTION_BOMB;
+            reward -=1;
         }
 
         //  4) Move towards an enemy if there is one in exactly three reachable spaces.
@@ -177,6 +180,7 @@ public class RLPolicy {
                     }
                     // return node, which had prev_node
                     //return directionToAction(getDirection(myPosition, next_node));
+                    reward -=1;
 
                 }
             }
@@ -205,9 +209,11 @@ public class RLPolicy {
             // iterate until we get to the immadiate next node
             if (myPosition.equals(previousNode)){
                 //return directionToAction(getDirection(myPosition, previousNode));
+                reward -=0.1;
             }
             while (!myPosition.equals(prev.get(previousNode))){ ;
                 previousNode = prev.get(previousNode);
+                reward +=0.1;
             }
             //return directionToAction(getDirection(myPosition, previousNode));
         }
@@ -223,6 +229,7 @@ public class RLPolicy {
                     if (dist.get(coords) == 1){
                         if( maybeBomb(ammo, blastStrength, items, dist, myPosition)){
                             //return Types.ACTIONS.ACTION_BOMB;
+                            reward +=1;
                         }
                     }
                 }
@@ -243,6 +250,7 @@ public class RLPolicy {
 
                             if (dirArray.size() > 0){
                                 //return directionToAction(dirArray.get(0));
+                                reward -=1;
                             }
                         }
 
@@ -270,16 +278,14 @@ public class RLPolicy {
         if (validDirections.size() > 0){
             int actionIdx = random.nextInt(validDirections.size());
             //return directionToAction(validDirections.get(actionIdx));
+            reward -=0.5;
         }
 
-        System.out.println(reward);
+        System.out.println(Qval + alpha*(reward+ gamma * maxQval - Qval));
 
         return Qval + alpha*(reward+ gamma * maxQval - Qval) ;
     }
 
-    public int getActionToPick(){
-        return actionToPick;
-    }
 
     public int[] getMessage() {
         // default message

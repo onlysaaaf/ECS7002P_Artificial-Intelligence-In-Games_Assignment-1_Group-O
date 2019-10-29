@@ -93,6 +93,9 @@ public class RLPlayer extends Player {
                     bestCord = next.getPosition();
                     pickedAction = a;
                 }
+                if(next.getPosition() == copyState.getPosition()){
+                    return actions[random.nextInt(actions.length)];
+                }
             }
 
             return pickedAction;
