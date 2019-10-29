@@ -24,7 +24,7 @@ public class RLPolicy {
     public double getPolicyFromState(GameState g){
         ArrayList<Types.ACTIONS> actionsList = Types.ACTIONS.all();
         actions = new Types.ACTIONS[actionsList.size()];
-        double maxQVal = Double.MIN_VALUE;
+        double maxQVal = Double.MAX_VALUE;
         double Qval = Double.MIN_VALUE;
         GameState sPrime = null;
         GameState copy = g.copy();
