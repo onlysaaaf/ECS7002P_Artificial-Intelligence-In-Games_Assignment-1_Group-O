@@ -94,7 +94,10 @@ public class RLPlayer extends Player {
                     pickedAction = a;
                 }
                 if(next.getPosition() == copyState.getPosition()){
-                    return actions[random.nextInt(actions.length)];
+                    pickedAction = actions[random.nextInt(actions.length)];
+                    while (pickedAction == Types.ACTIONS.ACTION_BOMB) {
+                        pickedAction = actions[random.nextInt(actions.length)];
+                    }
                 }
             }
 
@@ -159,31 +162,4 @@ public class RLPlayer extends Player {
     }
 
 
-    public <K, V> Map<K, V> convertToTreeMap(Map<K, V> hashMap)
-    {
-        Map<K, V>
-                treeMap = hashMap
-                // Get the entries from the hashMap
-                .entrySet()
-
-                // Convert the map into stream
-                .stream()
-
-                // Now collect the returned TreeMap
-                .collect(
-                        Collectors
-
-                                // Using Collectors, collect the entries
-                                // and convert it into TreeMap
-                                .toMap(
-                                        Map.Entry::getKey,
-                                        Map.Entry::getValue,
-                                        (oldValue,
-                                         newValue)
-                                                -> newValue,
-                                        TreeMap::new));
-
-        // Return the TreeMap
-        return treeMap;
-    }
 }

@@ -150,18 +150,18 @@ public class RLPolicy {
 
             if(!directions.isEmpty()) {
                 //return directionToAction(directions.get(random.nextInt(directions.size())));
-                reward -=1;
+                reward -=0.1;
             }
             else {
                 //return Types.ACTIONS.ACTION_STOP;
-                reward+=1;
+                reward+=0.1;
             }
         }
 
         // 3) Lay bomb if we are adjacent to an enemy.
         if(isAdjacentEnemy(items, dist, enemies) && maybeBomb(ammo, blastStrength, items, dist, myPosition)){
             //return Types.ACTIONS.ACTION_BOMB;
-            reward -=1;
+            reward -=0.1;
         }
 
         //  4) Move towards an enemy if there is one in exactly three reachable spaces.
