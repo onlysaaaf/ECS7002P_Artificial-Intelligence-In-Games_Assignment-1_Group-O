@@ -11,6 +11,9 @@ import utils.Vector2d;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import static utils.Utils.*;
+import static java.lang.Math.*;
+
 
 import static utils.Utils.directionToAction;
 import static utils.Utils.getDirection;
@@ -26,7 +29,8 @@ public class RLPolicy {
     private ArrayList<Double> qValues = new ArrayList<>();
     private ArrayList<GameState> states = new ArrayList<>();
     private Random random = new Random();
-
+    private ArrayList<Vector2d> recentlyVisitedPositions = new ArrayList<>();
+    private int recentlyVisitedLength = 0;
 
     public double getPolicyFromState(GameState g){
         ArrayList<Types.ACTIONS> actionsList = Types.ACTIONS.all();
@@ -145,16 +149,16 @@ public class RLPolicy {
             ArrayList<Types.DIRECTIONS> directions = findSafeDirections(board, myPosition, unsafeDirections, bombs, enemies);
 
             if(!directions.isEmpty()) {
-                return directionToAction(directions.get(random.nextInt(directions.size())));
+                //return directionToAction(directions.get(random.nextInt(directions.size())));
             }
             else {
-                return Types.ACTIONS.ACTION_STOP;
+                //return Types.ACTIONS.ACTION_STOP;
             }
         }
 
         // 3) Lay bomb if we are adjacent to an enemy.
         if(isAdjacentEnemy(items, dist, enemies) && maybeBomb(ammo, blastStrength, items, dist, myPosition)){
-            return Types.ACTIONS.ACTION_BOMB;
+            //return Types.ACTIONS.ACTION_BOMB;
         }
 
         //  4) Move towards an enemy if there is one in exactly three reachable spaces.
@@ -172,7 +176,7 @@ public class RLPolicy {
                         next_node = prev.get(next_node);
                     }
                     // return node, which had prev_node
-                    return directionToAction(getDirection(myPosition, next_node));
+                    //return directionToAction(getDirection(myPosition, next_node));
 
                 }
             }
@@ -200,12 +204,12 @@ public class RLPolicy {
         if (distance <= 2){
             // iterate until we get to the immadiate next node
             if (myPosition.equals(previousNode)){
-                return directionToAction(getDirection(myPosition, previousNode));
+                //return directionToAction(getDirection(myPosition, previousNode));
             }
             while (!myPosition.equals(prev.get(previousNode))){ ;
                 previousNode = prev.get(previousNode);
             }
-            return directionToAction(getDirection(myPosition, previousNode));
+            //return directionToAction(getDirection(myPosition, previousNode));
         }
 
         // 6) Maybe lay a bomb if we are within a space of a wooden wall.
@@ -218,7 +222,7 @@ public class RLPolicy {
                 for (Vector2d coords: entry.getValue()){
                     if (dist.get(coords) == 1){
                         if( maybeBomb(ammo, blastStrength, items, dist, myPosition)){
-                            return Types.ACTIONS.ACTION_BOMB;
+                            //return Types.ACTIONS.ACTION_BOMB;
                         }
                     }
                 }
@@ -238,7 +242,7 @@ public class RLPolicy {
                             dirArray = filterUnsafeDirections(myPosition, dirArray, bombs);
 
                             if (dirArray.size() > 0){
-                                return directionToAction(dirArray.get(0));
+                                //return directionToAction(dirArray.get(0));
                             }
                         }
 
@@ -265,7 +269,7 @@ public class RLPolicy {
 
         if (validDirections.size() > 0){
             int actionIdx = random.nextInt(validDirections.size());
-            return directionToAction(validDirections.get(actionIdx));
+            //return directionToAction(validDirections.get(actionIdx));
         }
 
         System.out.println(reward);

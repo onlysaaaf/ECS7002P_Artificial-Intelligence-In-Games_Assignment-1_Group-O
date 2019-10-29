@@ -89,7 +89,7 @@ public class RLPlayer extends Player {
                 GameState next = policy.roll(copyState, a);
 //                System.out.println(" Current pos " + copyState.getPosition());
 //                System.out.println("Next pos " + next.getPosition());
-                if((next.getPosition().dist(optimalCord) < bestCord.dist(optimalCord))){
+                if((next.getPosition().dist(optimalCord) < bestCord.dist(optimalCord))){ //compare distances
                     bestCord = next.getPosition();
                     pickedAction = a;
                 }
