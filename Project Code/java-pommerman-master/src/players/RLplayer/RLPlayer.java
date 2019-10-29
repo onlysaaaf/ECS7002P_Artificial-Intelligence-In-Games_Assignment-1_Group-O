@@ -86,8 +86,11 @@ public class RLPlayer extends Player {
             Vector2d bestCord = new Vector2d(gs.getPosition());
             for(Types.ACTIONS a : actions){
                 GameState next = policy.roll(copyState, a);
-                if(next.getPosition().dist(cord) > bestCord.dist(cord)){
+//                System.out.println(" Current pos " + copyState.getPosition());
+//                System.out.println("Next pos " + next.getPosition());
+                if(next.getPosition().dist(cord) < bestCord.dist(cord)){
                     bestCord = next.getPosition();
+                    System.out.println(bestCord);
                     pickedAction = a;
                 }
             }
