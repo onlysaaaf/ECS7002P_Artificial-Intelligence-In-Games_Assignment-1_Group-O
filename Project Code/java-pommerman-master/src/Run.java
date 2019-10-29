@@ -1,5 +1,7 @@
 import core.Game;
 import players.*;
+import players.RLplayer.RLLearner;
+import players.RLplayer.RLPlayer;
 import players.mcts.MCTSParams;
 import players.mcts.MCTSPlayer;
 import players.rhea.RHEAPlayer;
@@ -27,6 +29,7 @@ public class Run {
         System.out.println("\t\t 3 SimplePlayer");
         System.out.println("\t\t 4 RHEA 200 itereations, shift buffer, pop size 1, random init, length: 12");
         System.out.println("\t\t 5 MCTS 200 iterations, length: 12");
+        System.out.println("\t\t 6 RLPlayer  100ms learn time");
     }
 
     public static void main(String[] args) {
@@ -121,8 +124,14 @@ public class Run {
                         p = new MCTSPlayer(seed, playerID++, mctsParams);
                         playerStr[i-4] = "MCTS";
                         break;
+
+                    case 6:
+                        p = new RLPlayer(seed,playerID++);
+                        playerStr[i-4] = "RL Player";
                     default:
                         System.out.println("WARNING: Invalid agent ID: " + agentType );
+
+
                 }
 
                 players.add(p);

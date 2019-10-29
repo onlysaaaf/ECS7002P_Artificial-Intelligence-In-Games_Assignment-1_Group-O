@@ -281,7 +281,7 @@ public class RLPolicy {
             reward -=0.5;
         }
 
-        System.out.println(Qval + alpha*(reward+ gamma * maxQval - Qval));
+       // System.out.println(Qval + alpha*(reward+ gamma * maxQval - Qval));
 
         return Qval + alpha*(reward+ gamma * maxQval - Qval) ;
     }
