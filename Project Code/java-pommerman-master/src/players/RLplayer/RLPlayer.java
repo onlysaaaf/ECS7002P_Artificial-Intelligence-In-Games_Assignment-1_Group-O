@@ -71,13 +71,14 @@ public class RLPlayer extends Player {
 //            }
 
             Double bestQVal = Double.MIN_VALUE;
-            Vector2d cord = new Vector2d(0,0);
+            Vector2d optimalCord = new Vector2d(0,0);
            // Map<Vector2d, Double> sorted_qvals = convertToTreeMap(RLLearner.qVals);
             for (Map.Entry<Vector2d, Double> entry : RLLearner.qVals.entrySet()) {
                // System.out.println(entry.getKey() + " = " + entry.getValue());
                 if(entry.getValue() > bestQVal){
                     bestQVal = entry.getValue();
-                    cord = entry.getKey();
+                    optimalCord = entry.getKey();
+                   // System.out.println(optimalCord);
                 }
             }
 
@@ -88,9 +89,8 @@ public class RLPlayer extends Player {
                 GameState next = policy.roll(copyState, a);
 //                System.out.println(" Current pos " + copyState.getPosition());
 //                System.out.println("Next pos " + next.getPosition());
-                if(next.getPosition().dist(cord) < bestCord.dist(cord)){
+                if((next.getPosition().dist(optimalCord) < bestCord.dist(optimalCord))){
                     bestCord = next.getPosition();
-                    System.out.println(bestCord);
                     pickedAction = a;
                 }
             }
@@ -101,7 +101,7 @@ public class RLPlayer extends Player {
 
 
 //            System.out.println(bestQVal);
-//            System.out.println(cord);
+//            System.out.println(optimalCord);
 
 //            Set<Map.Entry<Vector2d, Double>> qvalues = sorted_qvals.entrySet();
 //            Comparator<Map.Entry<Vector2d,Double>> comparator = new Comparator<Map.Entry<Vector2d, Double>>() {
