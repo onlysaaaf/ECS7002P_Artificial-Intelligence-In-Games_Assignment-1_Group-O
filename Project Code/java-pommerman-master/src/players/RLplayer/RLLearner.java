@@ -78,16 +78,23 @@ public class   RLLearner {
 
 
         //int bestAction = 0;
-
+    Types.ACTIONS bestAction = null;
+    double bestQ = Double.MIN_VALUE;
         while (!stop) {
             for (Types.ACTIONS a : actionsList) {
                 GameState next = policy.roll(copyState, a);
                 Vector2d nextPos = next.getPosition();
                 Vector2d newPair = new Vector2d(nextPos.x, nextPos.y);
                 double q = policy.evaluate(next, qVals.get(newPair), Double.MAX_VALUE); //Eval new state
+                if (q>bestQ){
+                    bestQ = q;
+                    bestAction = a;
+                }
                 qVals.put(newPair, q);
 
             }
+            copyState = policy.roll(copyState,bestAction); //get besttate to learn from based on action
+
             if (params.stop_type == params.STOP_TIME) {
                 numIters++;
                 acumTimeTaken += (elapsedTimerIteration.elapsedMillis());

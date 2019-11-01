@@ -367,6 +367,7 @@ public class Utils
      * @param direction - the direction
      * @return movement action
      */
+
     public static Types.ACTIONS directionToAction(Types.DIRECTIONS direction)
     {
         if(direction == Types.DIRECTIONS.DOWN)
