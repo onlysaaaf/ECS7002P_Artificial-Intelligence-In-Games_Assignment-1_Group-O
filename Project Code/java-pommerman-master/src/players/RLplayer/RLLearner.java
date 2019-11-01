@@ -63,18 +63,45 @@ public class   RLLearner {
         int currentx = currentpos.x;
         Vector2d currentPair = new Vector2d(currentx,currenty);
         double Qval = qVals.get(currentPair);
+        boolean stop = false;
+                int index = 0;
+        int numIters = 0;
+        int acumTimeTaken = 0;
+        int avgTimeTaken = 0;
+        long remaining = 0;
+        int remainingLimit = 5;
+        int fmCallsCount = 0;
+
+        ElapsedCpuTimer ect = new ElapsedCpuTimer();
+        ect.setMaxTimeMillis(100);
+     ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
+
+
         //int bestAction = 0;
 
-        double newQ = policy.evaluate(copyState, Qval, Double.MAX_VALUE );
-        for(Types.ACTIONS a: actionsList){
-            GameState next = policy.roll(copyState, a);
-            Vector2d nextPos = next.getPosition();
-            Vector2d newPair = new Vector2d(nextPos.x,nextPos.y);
-            double q = policy.evaluate(next, qVals.get(newPair), Double.MAX_VALUE); //Eval new state
-            qVals.put(newPair,q);
+        while (!stop) {
+            for (Types.ACTIONS a : actionsList) {
+                GameState next = policy.roll(copyState, a);
+                Vector2d nextPos = next.getPosition();
+                Vector2d newPair = new Vector2d(nextPos.x, nextPos.y);
+                double q = policy.evaluate(next, qVals.get(newPair), Double.MAX_VALUE); //Eval new state
+                qVals.put(newPair, q);
 
+            }
+            if (params.stop_type == params.STOP_TIME) {
+                numIters++;
+                acumTimeTaken += (elapsedTimerIteration.elapsedMillis());
+                avgTimeTaken = acumTimeTaken / numIters;
+                remaining = ect.remainingTimeMillis();
+                stop = remaining <= 2 * avgTimeTaken || remaining <= remainingLimit;
+            } else if (params.stop_type == params.STOP_ITERATIONS) {
+                numIters++;
+                stop = numIters >= params.num_iterations;
+            } else if (params.stop_type == params.STOP_FMCALLS) {
+                fmCallsCount += params.rollout_depth;
+                stop = (fmCallsCount + params.rollout_depth) > params.num_fmcalls;
+            }
         }
-
 
 
         //for time limit
