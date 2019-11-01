@@ -151,7 +151,7 @@ public class RLPolicy {
 
             if(!directions.isEmpty()) {
                 //return directionToAction(directions.get(random.nextInt(directions.size())));
-                reward -=0.1;
+                reward -=0.2;
             }
             else {
                 //return Types.ACTIONS.ACTION_STOP;
@@ -162,7 +162,7 @@ public class RLPolicy {
         // 3) Lay bomb if we are adjacent to an enemy.
         if(isAdjacentEnemy(items, dist, enemies) && maybeBomb(ammo, blastStrength, items, dist, myPosition)){
             //return Types.ACTIONS.ACTION_BOMB;
-            reward -=0.1;
+            reward +=0.1;
         }
 
         //  4) Move towards an enemy if there is one in exactly three reachable spaces.
@@ -248,7 +248,7 @@ public class RLPolicy {
                             ArrayList<Types.DIRECTIONS> dirArray = new ArrayList<>();
                             dirArray.add(direction);
                             dirArray = filterUnsafeDirections(myPosition, dirArray, bombs);
-
+                            reward +=0.1;
                             if (dirArray.size() > 0){
                                 //return directionToAction(dirArray.get(0));
                                 reward +=0.1;
@@ -273,9 +273,10 @@ public class RLPolicy {
 
         // 9) Add this position to the recently visited uninteresting positions so we don't return immediately.
         recentlyVisitedPositions.add(myPosition);
-        if (recentlyVisitedPositions.size() > recentlyVisitedLength)
+        if (recentlyVisitedPositions.size() > recentlyVisitedLength) {
             recentlyVisitedPositions.remove(0);
-
+            reward -=0.05;
+        }
         if (validDirections.size() > 0){
             int actionIdx = random.nextInt(validDirections.size());
             //return directionToAction(validDirections.get(actionIdx));
@@ -697,8 +698,8 @@ public class RLPolicy {
                 int bombX = b.getPosition().x;
                 int bombY = b.getPosition().y;
                 int blastStrenght = b.getBlastStrength();
-                if ((myPos.x == bombX && Math.abs(bombY - myPos.y) <= blastStrenght) ||
-                        (myPos.y == bombY && Math.abs(bombX - myPos.x) <= blastStrenght)){
+                if ((myPos.x == bombX && Math.abs(bombY - myPos.y) <= blastStrenght +1) ||
+                        (myPos.y == bombY && Math.abs(bombX - myPos.x) <= blastStrenght +1)){
                     isBad = true;
                     break;
                 }

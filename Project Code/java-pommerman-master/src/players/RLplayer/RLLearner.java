@@ -93,7 +93,7 @@ public class   RLLearner {
                 qVals.put(newPair, q);
 
             }
-            copyState = policy.roll(copyState,bestAction); //get besttate to learn from based on action
+            copyState = policy.roll(copyState,bestAction); //get best state to learn from based on action
 
             if (params.stop_type == params.STOP_TIME) {
                 numIters++;
