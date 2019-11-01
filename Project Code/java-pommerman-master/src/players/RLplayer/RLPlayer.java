@@ -11,6 +11,9 @@ import utils.Types;
 import utils.Vector2d;
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.security.Policy;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,6 +27,8 @@ public class RLPlayer extends Player {
     RLParams params;
     RLLearner learner;
     RLPolicy policy;
+    File deathFile = new File(".");
+
 
     /**
      * Default constructor, to be called in subclasses (initializes player ID and random seed for this agent.
@@ -125,7 +130,27 @@ public class RLPlayer extends Player {
 //                    System.out.println("RL PLAYER PLANTED BOMB");
 //                }
 
+
+                //Log deaths in file
+
+                Types.TILETYPE[] aliveAgentIDs = currentState.getAliveAgentIDs();
+                boolean isDead = false;
+                for(Types.TILETYPE agent: aliveAgentIDs){
+
+                }
+                try(FileWriter fw=new FileWriter(deathFile))
+                {
+                    fw.write("INSERT ME WHERE MY JAR IS");
+                    fw.flush();
+                    fw.close();
+                }catch(IOException ex)
+                {
+                    ex.printStackTrace();
+                }
+
             }
+
+
 
             return pickedAction;
 
