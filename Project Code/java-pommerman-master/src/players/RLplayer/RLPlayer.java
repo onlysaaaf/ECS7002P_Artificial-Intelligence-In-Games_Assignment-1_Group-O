@@ -63,7 +63,6 @@ public class RLPlayer extends Player {
 
         learner.learn(copyState);
 
-        if(Types.DEFAULT_VISION_RANGE ==-1){
             //everything visible
             //sort list
 //            for(Map.Entry<Pair,Double> e :qvalues){
@@ -155,13 +154,7 @@ public class RLPlayer extends Player {
 
 
 
-        }else if(Types.DEFAULT_VISION_RANGE > 1) {
-            //Types.whatever  = vision range
-        }else{
-            return null;
-        }
 
-        return actions[1];
     }
 
     @Override
