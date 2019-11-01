@@ -432,17 +432,23 @@ public class RLPolicy {
             else if(myPosition.x == position.x){
                 if(myPosition.y < position.y){ // Bomb is down.
                     ret.put(Types.DIRECTIONS.DOWN, max(ret.getOrDefault(Types.DIRECTIONS.DOWN, 0), bombBlastStrength));
+                    reward -=0.2 *bombBlastStrength;
                 }
                 else{ // Bomb is up.
                     ret.put(Types.DIRECTIONS.UP, max(ret.getOrDefault(Types.DIRECTIONS.UP, 0), bombBlastStrength));
+                    reward -=0.2 *bombBlastStrength;
                 }
             }
             else if(myPosition.y == position.y){
                 if(myPosition.x < position.x){ // Bomb is right.
                     ret.put(Types.DIRECTIONS.RIGHT, max(ret.getOrDefault(Types.DIRECTIONS.RIGHT, 0), bombBlastStrength));
+                    reward -=0.2 *bombBlastStrength;
+
                 }
                 else{ // Bomb is left.
                     ret.put(Types.DIRECTIONS.LEFT, max(ret.getOrDefault(Types.DIRECTIONS.LEFT, 0), bombBlastStrength));
+                    reward -=0.2 *bombBlastStrength;
+
                 }
             }
         }
