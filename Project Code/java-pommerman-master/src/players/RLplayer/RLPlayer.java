@@ -82,9 +82,14 @@ public class RLPlayer extends Player {
                 }
             }
 
-            copyState = currentState.copy();
-            Types.ACTIONS pickedAction = actions[0];
+            copyState = currentState.copy(); //copy current state for game simulation
+            Types.ACTIONS pickedAction = actions[0]; //set default picked action
             Vector2d bestCord = new Vector2d(gs.getPosition());
+            GameState bestState = copyState; //get best state
+            Vector2d bestStatePos = bestState.getPosition(); //get pos for best state
+            Vector2d bestPair = new Vector2d(bestStatePos.x,bestStatePos.y); // create vector for best state pos
+            int notMovedFor = 0;
+
             for(Types.ACTIONS a : actions){
                 GameState next = policy.roll(copyState, a);
 //                System.out.println(" Current pos " + copyState.getPosition());
@@ -93,12 +98,34 @@ public class RLPlayer extends Player {
                     bestCord = next.getPosition();
                     pickedAction = a;
                 }
-                if(next.getPosition() == copyState.getPosition()){
-                    pickedAction = actions[random.nextInt(actions.length)];
-                    while (pickedAction == Types.ACTIONS.ACTION_BOMB) {
-                        pickedAction = actions[random.nextInt(actions.length)];
-                    }
+                Vector2d nextPos = next.getPosition();
+                Vector2d newPair = new Vector2d(nextPos.x,nextPos.y);
+                if(policy.evaluate(next, RLLearner.qVals.get(newPair), Double.MAX_VALUE) > policy.evaluate(bestState, RLLearner.qVals.get(bestPair),Double.MAX_VALUE )){
+                    bestState = next;
+                    pickedAction = a;
+                    bestStatePos = bestState.getPosition();
+                    bestPair = new Vector2d(bestStatePos.x,bestStatePos.y);
+
+
                 }
+
+                if(next.getPosition() == copyState.getPosition()){
+                    notMovedFor ++;
+                    if(notMovedFor > 5) {
+                        pickedAction = actions[random.nextInt(actions.length)];
+                        GameState next2 = policy.roll(copyState, pickedAction);
+
+                        //condition to make so player doesn't kill itself
+                        while (pickedAction == Types.ACTIONS.ACTION_BOMB && next2.getPosition() == next.getPosition()) {
+                            pickedAction = actions[random.nextInt(actions.length)];
+                        }
+                    }
+
+                }
+                if(pickedAction == Types.ACTIONS.ACTION_BOMB){
+                    System.out.println("RL PLAYER PLANTED BOMB");
+                }
+
             }
 
             return pickedAction;

@@ -23,9 +23,8 @@ public class RLPolicy {
     Random r = new Random();
 
     private double alpha = 0.1; //Learning rate
-    private double gamma = 0.2; //Eagerness
+    private double gamma = 0.3; //Eagerness
     private double reward = 0;
-    int actionToPick = 0;
     private ArrayList<Double> qValues = new ArrayList<>();
     private ArrayList<GameState> states = new ArrayList<>();
     private Random random = new Random();
@@ -118,6 +117,7 @@ public class RLPolicy {
                     bomb.setBlastStrength(bombBlastStrength[y][x]);
                     bomb.setLife(bombLife[y][x]);
                     bombs.add(bomb);
+                    reward +=0.1;
                 }
                 else if(Types.TILETYPE.getAgentTypes().contains(type) &&
                         type.getKey() != gs.getPlayerId()){ // May be an enemy
@@ -126,6 +126,7 @@ public class RLPolicy {
                         GameObject enemy = new GameObject(type);
                         enemy.setPosition(new Vector2d(x, y));
                         enemies.add(enemy); // no copy needed
+                        reward -=0.1;
                     }
                 }
             }
@@ -180,7 +181,7 @@ public class RLPolicy {
                     }
                     // return node, which had prev_node
                     //return directionToAction(getDirection(myPosition, next_node));
-                    reward -=1;
+                    reward -=0.2;
 
                 }
             }
@@ -250,7 +251,7 @@ public class RLPolicy {
 
                             if (dirArray.size() > 0){
                                 //return directionToAction(dirArray.get(0));
-                                reward -=1;
+                                reward +=0.1;
                             }
                         }
 
