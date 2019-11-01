@@ -90,51 +90,51 @@ public class   RLLearner {
 
     }
 
-    //calculate reward for state here
-    private double calculateQ(GameState state) {
-        int index = 0;
-        int numIters = 0;
-        boolean stop = false;
-        int acumTimeTaken = 0;
-        int avgTimeTaken = 0;
-        long remaining = 0;
-        int remainingLimit = 5;
-        int fmCallsCount = 0;
-        double newQ = Double.MIN_VALUE;
-        int actionToPick = 0;
-
-
-        ElapsedCpuTimer ect = new ElapsedCpuTimer();
-        ect.setMaxTimeMillis(40);
-
-
-        while (!stop) {
-           // states.add(state);
-            newQ = policy.getPolicyFromState(state);
-            ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
-         //   qValues.add(newQ);
-
-            //TODO
-
-            if (params.stop_type == params.STOP_TIME) {
-                numIters++;
-                acumTimeTaken += (elapsedTimerIteration.elapsedMillis());
-                avgTimeTaken = acumTimeTaken / numIters;
-                remaining = ect.remainingTimeMillis();
-                stop = remaining <= 2 * avgTimeTaken || remaining <= remainingLimit;
-            } else if (params.stop_type == params.STOP_ITERATIONS) {
-                numIters++;
-                stop = numIters >= params.num_iterations;
-            } else if (params.stop_type == params.STOP_FMCALLS) {
-                fmCallsCount += params.rollout_depth;
-                stop = (fmCallsCount + params.rollout_depth) > params.num_fmcalls;
-            }
-
-
-        }
-        return newQ;
-
-
-
-    }
+//    //calculate reward for state here
+//    private double calculateQ(GameState state) {
+//        int index = 0;
+//        int numIters = 0;
+//        boolean stop = false;
+//        int acumTimeTaken = 0;
+//        int avgTimeTaken = 0;
+//        long remaining = 0;
+//        int remainingLimit = 5;
+//        int fmCallsCount = 0;
+//        double newQ = Double.MIN_VALUE;
+//        int actionToPick = 0;
+//
+//
+//        ElapsedCpuTimer ect = new ElapsedCpuTimer();
+//        ect.setMaxTimeMillis(40);
+//
+//
+//        while (!stop) {
+//           // states.add(state);
+//            newQ = policy.getPolicyFromState(state);
+//            ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
+//         //   qValues.add(newQ);
+//
+//            //TODO
+//
+//            if (params.stop_type == params.STOP_TIME) {
+//                numIters++;
+//                acumTimeTaken += (elapsedTimerIteration.elapsedMillis());
+//                avgTimeTaken = acumTimeTaken / numIters;
+//                remaining = ect.remainingTimeMillis();
+//                stop = remaining <= 2 * avgTimeTaken || remaining <= remainingLimit;
+//            } else if (params.stop_type == params.STOP_ITERATIONS) {
+//                numIters++;
+//                stop = numIters >= params.num_iterations;
+//            } else if (params.stop_type == params.STOP_FMCALLS) {
+//                fmCallsCount += params.rollout_depth;
+//                stop = (fmCallsCount + params.rollout_depth) > params.num_fmcalls;
+//            }
+//
+//
+//        }
+//        return newQ;
+//
+//
+//
+//    }
 }

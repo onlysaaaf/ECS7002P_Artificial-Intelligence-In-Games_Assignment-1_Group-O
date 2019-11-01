@@ -230,7 +230,7 @@ public class RLPolicy {
                     if (dist.get(coords) == 1){
                         if( maybeBomb(ammo, blastStrength, items, dist, myPosition)){
                             //return Types.ACTIONS.ACTION_BOMB;
-                            reward +=1;
+                            reward +=0.1;
                         }
                     }
                 }
