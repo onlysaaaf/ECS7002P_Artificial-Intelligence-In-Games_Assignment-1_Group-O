@@ -112,13 +112,13 @@ public class RLPlayer extends Player {
                 if(next.getPosition() == copyState.getPosition()){
                     notMovedFor ++;
                     if(notMovedFor > 5) {
-                        pickedAction = actions[random.nextInt(actions.length)];
+                        pickedAction = actions[random.nextInt(5)];
                         GameState next2 = policy.roll(copyState, pickedAction);
 
                         //condition to make so player doesn't kill itself
-                        while (pickedAction == Types.ACTIONS.ACTION_BOMB && next2.getPosition() == next.getPosition()) {
-                            pickedAction = actions[random.nextInt(actions.length)];
-                        }
+//                        while (pickedAction == Types.ACTIONS.ACTION_BOMB && next2.getPosition() == next.getPosition()) {
+//                            pickedAction = actions[random.nextInt(actions.length)];
+//                        }
                     }
 
                 }
