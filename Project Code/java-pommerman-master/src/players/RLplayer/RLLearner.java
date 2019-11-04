@@ -11,6 +11,8 @@ import utils.Types;
 import utils.Vector2d;
 
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -28,6 +30,8 @@ public class   RLLearner {
     ArrayList<Types.ACTIONS> actionsList;
 
 
+    File deathFileDir = new File(".");
+    File deathFile = new File(deathFileDir, "death.txt");
     private RLPolicy policy;
 
     RLLearner (GameState g){
@@ -64,7 +68,7 @@ public class   RLLearner {
         Vector2d currentPair = new Vector2d(currentx,currenty);
         double Qval = qVals.get(currentPair);
         boolean stop = false;
-                int index = 0;
+        int index = 0;
         int numIters = 0;
         int acumTimeTaken = 0;
         int avgTimeTaken = 0;
@@ -94,6 +98,18 @@ public class   RLLearner {
 
             }
             copyState = policy.roll(copyState,bestAction); //get best state to learn from based on action
+
+            if(copyState.isTerminal()){
+                    try {
+                        FileWriter fw = new FileWriter(deathFile);
+                        fw.write("Death of player at " + copyState.getPosition().toString());
+                   } catch (Exception e) {
+//                        System.out.println("Could not write to file");
+                        e.printStackTrace();
+//
+                    }
+
+            }
 
             if (params.stop_type == params.STOP_TIME) {
                 numIters++;

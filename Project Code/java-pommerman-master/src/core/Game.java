@@ -6,6 +6,8 @@ import players.Player;
 import players.SimonSaysPlayer;
 import utils.*;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.*;
 
 import static utils.Types.*;
@@ -13,6 +15,7 @@ import static utils.Types.VISUALS;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class Game {
+
 
      // State of the game (objects, ticks, etc).
     private GameLog gameLog;
@@ -328,6 +331,16 @@ public class Game {
             } else {
                 // This player is dead and action will be ignored
                 actions[i] = Types.ACTIONS.ACTION_STOP;
+//                if(p.getPlayerID() == 10) {
+//                    try {
+//                        FileWriter fw = new FileWriter(deathFile);
+//                        fw.write("Death of player " + p.getPlayerID() + " at" + getGameState(p.getPlayerID()).getPosition().toString());
+//                    } catch (Exception e) {
+//                        System.out.println("Could not write to file");
+//                        e.printStackTrace();
+//
+//                    }
+//                }
             }
         }
         return actions;

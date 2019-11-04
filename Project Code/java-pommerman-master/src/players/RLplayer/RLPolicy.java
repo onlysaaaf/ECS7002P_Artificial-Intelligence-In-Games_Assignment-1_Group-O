@@ -23,7 +23,7 @@ public class RLPolicy {
     Random r = new Random();
 
     private double alpha = 0.1; //Learning rate
-    private double gamma = 0.3; //Eagerness
+    private double gamma = 0.2; //Eagerness
     private double reward = 0;
     private ArrayList<Double> qValues = new ArrayList<>();
     private ArrayList<GameState> states = new ArrayList<>();

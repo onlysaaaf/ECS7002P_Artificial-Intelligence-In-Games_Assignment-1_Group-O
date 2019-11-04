@@ -27,7 +27,10 @@ public class RLPlayer extends Player {
     RLParams params;
     RLLearner learner;
     RLPolicy policy;
-    File deathFile = new File(".");
+    File deathFileDir = new File(".");
+    File deathFile = new File(deathFileDir, "death.txt");
+    boolean loopedThrough = false;
+    int forcedMoves = 0;
 
 
     /**
@@ -68,21 +71,12 @@ public class RLPlayer extends Player {
 
         learner.learn(copyState);
 
-            //everything visible
-            //sort list
-//            for(Map.Entry<Pair,Double> e :qvalues){
-//                System.out.println(e.getKey() + "=>" + e.getValue());
-//            }
-
             Double bestQVal = Double.MIN_VALUE;
             Vector2d optimalCord = new Vector2d(0,0);
-           // Map<Vector2d, Double> sorted_qvals = convertToTreeMap(RLLearner.qVals);
             for (Map.Entry<Vector2d, Double> entry : RLLearner.qVals.entrySet()) {
-               // System.out.println(entry.getKey() + " = " + entry.getValue());
                 if(entry.getValue() > bestQVal){
                     bestQVal = entry.getValue();
                     optimalCord = entry.getKey();
-                   // System.out.println(optimalCord);
                 }
             }
 
@@ -117,6 +111,10 @@ public class RLPlayer extends Player {
                     notMovedFor ++;
                     if(notMovedFor > 5) {
                         pickedAction = actions[random.nextInt(actions.length)];
+                        while(policy.evaluate(policy.roll(copyState,pickedAction), RLLearner.qVals.get(currentState.getPosition()), Double.MAX_VALUE) < RLLearner.qVals.get(currentState.getPosition())){
+                            pickedAction = actions[random.nextInt(actions.length)];
+                        }
+                        //forcedMoves++;
                        // GameState next2 = policy.roll(copyState, pickedAction);
 
                         //condition to make so player doesn't kill itself
@@ -133,49 +131,33 @@ public class RLPlayer extends Player {
 
                 //Log deaths in file
 
-                Types.TILETYPE[] aliveAgentIDs = currentState.getAliveAgentIDs();
-                boolean isDead = false;
-                for(Types.TILETYPE agent: aliveAgentIDs){
 
-                }
-                try(FileWriter fw=new FileWriter(deathFile))
-                {
-                    fw.write("INSERT ME WHERE MY JAR IS");
-                    fw.flush();
-                    fw.close();
-                }catch(IOException ex)
-                {
-                    ex.printStackTrace();
-                }
 
             }
 
-
+//        Types.TILETYPE[] aliveAgentIDs = currentState.getAliveAgentIDs();
+//        boolean isDead = true;
+//        for(Types.TILETYPE agent: aliveAgentIDs){
+//            System.out.println(agent.getKey());
+//            if(agent.getKey() == this.getPlayerID()){
+//                isDead = false;
+//            }
+//
+//        }
+//        if(isDead && !loopedThrough) {
+//            try (FileWriter fw = new FileWriter(deathFile)) {
+//                fw.write("Death at: " + currentState.getPosition());
+//                fw.flush();
+//                loopedThrough = true;
+//            } catch (IOException ex) {
+//            }
+//
+//
+//        }
 
             return pickedAction;
 
 
-
-
-//            System.out.println(bestQVal);
-//            System.out.println(optimalCord);
-
-//            Set<Map.Entry<Vector2d, Double>> qvalues = sorted_qvals.entrySet();
-//            Comparator<Map.Entry<Vector2d,Double>> comparator = new Comparator<Map.Entry<Vector2d, Double>>() {
-//                @Override
-//                public int compare(Map.Entry<Vector2d, Double> pairDoubleEntry, Map.Entry<Vector2d, Double> t1) {
-//                    Vector2d cord1 = pairDoubleEntry.getKey();
-//                    Double qVal = pairDoubleEntry.getValue();
-//                    Vector2d cord2 = t1.getKey();
-//                    Double qVal2 = t1.getValue();
-//                    System.out.println(qVal);
-//                    System.out.println(qVal2);
-//                    System.out.println(Double.compare(qVal,qVal2));
-//
-//
-//                    return Double.compare(qVal,qVal2);
-//                }
-//            };
 
 
 
