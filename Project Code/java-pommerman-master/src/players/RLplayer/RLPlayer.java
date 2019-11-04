@@ -31,6 +31,8 @@ public class RLPlayer extends Player {
     File deathFile = new File(deathFileDir, "death.txt");
     boolean loopedThrough = false;
     int forcedMoves = 0;
+    int notMovedFor = 0;
+
 
 
     /**
@@ -86,7 +88,6 @@ public class RLPlayer extends Player {
             GameState bestState = copyState; //get best state
             Vector2d bestStatePos = bestState.getPosition(); //get pos for best state
             Vector2d bestPair = new Vector2d(bestStatePos.x,bestStatePos.y); // create vector for best state pos
-            int notMovedFor = 0;
 
             for(Types.ACTIONS a : actions){
                 GameState next = policy.roll(copyState, a);
@@ -107,13 +108,15 @@ public class RLPlayer extends Player {
 
                 }
 
+                //if player not moved for 5 ticks make random move greedily
                 if(next.getPosition() == copyState.getPosition()){
                     notMovedFor ++;
-                    if(notMovedFor > 5) {
+                    if(notMovedFor > 80) {
                         pickedAction = actions[random.nextInt(actions.length)];
-                        while(policy.evaluate(policy.roll(copyState,pickedAction), RLLearner.qVals.get(currentState.getPosition()), Double.MAX_VALUE) < RLLearner.qVals.get(currentState.getPosition())){
+                        while(policy.evaluate(policy.roll(copyState,pickedAction), RLLearner.qVals.get(copyState.getPosition()), Double.MAX_VALUE) < RLLearner.qVals.get(copyState.getPosition())){
                             pickedAction = actions[random.nextInt(actions.length)];
                         }
+                        notMovedFor = 0;
                         //forcedMoves++;
                        // GameState next2 = policy.roll(copyState, pickedAction);
 

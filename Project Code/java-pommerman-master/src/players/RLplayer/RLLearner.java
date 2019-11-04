@@ -28,6 +28,7 @@ public class   RLLearner {
      static HashMap<Vector2d,Double> qVals;
      static Vector2d positions;
     ArrayList<Types.ACTIONS> actionsList;
+    double bestQ = Double.MIN_VALUE;
 
 
     File deathFileDir = new File(".");
@@ -83,7 +84,6 @@ public class   RLLearner {
 
         //int bestAction = 0;
     Types.ACTIONS bestAction = null;
-    double bestQ = Double.MIN_VALUE;
         while (!stop) {
             for (Types.ACTIONS a : actionsList) {
                 GameState next = policy.roll(copyState, a);
@@ -96,6 +96,20 @@ public class   RLLearner {
                 }
                 qVals.put(newPair, q);
 
+            }
+
+
+            for(int x =0; x< Types.BOARD_SIZE;x++){
+                for (int y = 0; y<Types.BOARD_SIZE; y++){
+                    Vector2d currentStatePos = new Vector2d(x,y);
+                    double q = policy.evaluate(policy.roll(copyState,actionsList.get(random.nextInt(actionsList.size()))), qVals.get(currentStatePos), Double.MAX_VALUE); //Update all qvalues in map by rolling and evaluating random action
+                    qVals.put(currentpos, q);
+                    if (q>bestQ){
+                        bestQ = q;
+                        //bestAction = a;
+                    }
+
+                }
             }
             copyState = policy.roll(copyState,bestAction); //get best state to learn from based on action
 
