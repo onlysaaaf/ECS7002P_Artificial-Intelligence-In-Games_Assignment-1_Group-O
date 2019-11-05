@@ -99,26 +99,11 @@ public class   RLLearner {
                     qVals.put(currentpos, q);
                     if (q>bestQ){
                         bestQ = q;
-                        //bestAction = a;
                     }
 
                 }
             }
             copyState = policy.roll(copyState,bestAction); //get best state to learn from based on action
-
-            if(copyState.isTerminal()){
-                    try {
-                        FileWriter fw = new FileWriter(deathFile);
-                        fw.write("Death of player at " + copyState.getPosition().toString());
-                   } catch (Exception e) {
-//                        System.out.println("Could not write to file");
-                        e.printStackTrace();
-//
-                    }
-
-                    break;
-
-            }
 
             if (params.stop_type == params.STOP_TIME) {
                 numIters++;
@@ -127,6 +112,18 @@ public class   RLLearner {
                 remaining = ect.remainingTimeMillis();
                 stop = remaining <= 2 * avgTimeTaken || remaining <= remainingLimit;
             }
+            if(copyState.isTerminal()){
+                    try {
+                        FileWriter fw = new FileWriter(deathFile);
+                        fw.write("Death of player at " + copyState.getPosition().toString());
+                   } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+
+            }
+
         }
 
 
