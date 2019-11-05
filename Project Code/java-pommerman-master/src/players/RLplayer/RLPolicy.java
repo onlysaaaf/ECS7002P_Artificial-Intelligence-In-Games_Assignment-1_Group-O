@@ -312,7 +312,7 @@ public class RLPolicy {
         Queue<Vector2d> Q = new LinkedList<>();
 
         if(Types.DEFAULT_VISION_RANGE !=-1){
-            depth = Types.DEFAULT_VISION_RANGE;
+            depth = Types.DEFAULT_VISION_RANGE; //simply changing depth to vision range implements partial visibility pathfinding
         }
         for(int r = max(0, myPosition.x - depth); r < min(board.length, myPosition.x + depth); r++){
             for(int c = max(0, myPosition.y - depth); c < min(board.length, myPosition.y + depth); c++){
