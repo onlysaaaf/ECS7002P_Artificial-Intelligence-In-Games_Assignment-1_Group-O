@@ -116,15 +116,20 @@ public class   RLLearner {
 
                     }
                 }
-
-                for (int x = copyState.getPosition().x; x <= Types.DEFAULT_VISION_RANGE - copyState.getPosition().x; x--) { //for partial visbility only search through vision range
-                    for (int y = copyState.getPosition().y; y <= Types.DEFAULT_VISION_RANGE -copyState.getPosition().y; y--) {
+                outerloop:
+                for (int x = copyState.getPosition().x; x < Types.DEFAULT_VISION_RANGE - copyState.getPosition().x; x--) { //for partial visbility only search through vision range
+                    for (int y = copyState.getPosition().y; y < Types.DEFAULT_VISION_RANGE -copyState.getPosition().y; y--) {
                         Vector2d currentStatePos = new Vector2d(x, y);
-                        double q = policy.evaluate(policy.roll(copyState, actionsList.get(random.nextInt(actionsList.size()))), qVals.get(currentStatePos), Double.MAX_VALUE); //Update all qvalues in map by rolling and evaluating random action
-                        qVals.put(currentpos, q);
-                        if (q > bestQ) {
-                            bestQ = q;
+                        if(x>=0 &&y>=0) {
+                            double q = policy.evaluate(policy.roll(copyState, actionsList.get(random.nextInt(actionsList.size()))), qVals.get(currentStatePos), Double.MAX_VALUE); //Update all qvalues in map by rolling and evaluating random action
+                            qVals.put(currentpos, q);
+                            if (q > bestQ) {
+                                bestQ = q;
+                            }
+                        }else {
+                            break outerloop;
                         }
+
 
                     }
                 }
