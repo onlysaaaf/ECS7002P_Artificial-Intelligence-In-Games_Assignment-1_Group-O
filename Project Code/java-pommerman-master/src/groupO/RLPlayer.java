@@ -90,7 +90,6 @@ public class RLPlayer extends Player {
                 //if player not moved for 5 ticks make random move greedily
                 if(next.getPosition() == copyState.getPosition()) {
                     if (policy.evaluate(next, RLLearner.qVals.get(next.getPosition()), Double.MAX_VALUE) > policy.evaluate(copyState, RLLearner.qVals.get(copyState.getPosition()), Double.MAX_VALUE) && notMovedFor <max_ticks) { //if action results in better qvalue return anyway
-                        notMovedFor++; //We don't want the player to stand still for too long
                         return pickedAction;
                     } else {
                         notMovedFor++; //We don't want the player to stand still for too long
