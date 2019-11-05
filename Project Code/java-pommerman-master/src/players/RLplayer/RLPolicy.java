@@ -23,7 +23,7 @@ public class RLPolicy {
     Random r = new Random();
 
     private double alpha = 0.05; //Learning rate
-    private double gamma = 0.01; //Eagerness
+    private double gamma = 0.1; //Eagerness
     private double reward = Double.MIN_VALUE;
     private ArrayList<Double> qValues = new ArrayList<>();
     private ArrayList<GameState> states = new ArrayList<>();
@@ -55,7 +55,6 @@ public class RLPolicy {
 
 
         //pick action to move to state that has maximum Q value
-        //TODO
 
         return maxQVal;
     }
@@ -86,7 +85,7 @@ public class RLPolicy {
 
     public Double evaluate(GameState gs, double Qval, double maxQval){
         CustomHeuristic heuristic = new CustomHeuristic(gs);
-        reward = heuristic.evaluateState(gs); //or implement custom hueristic
+        //reward = heuristic.evaluateState(gs); //or implement custom hueristic
         Vector2d myPosition = gs.getPosition();
 
         Types.TILETYPE[][] board = gs.getBoard();
@@ -116,7 +115,7 @@ public class RLPolicy {
                     bomb.setBlastStrength(bombBlastStrength[y][x]);
                     bomb.setLife(bombLife[y][x]);
                     bombs.add(bomb);
-                    reward +=0.1;
+                    reward +=0.2;
                 }
                 else if(Types.TILETYPE.getAgentTypes().contains(type) &&
                         type.getKey() != gs.getPlayerId()){ // May be an enemy
@@ -125,7 +124,7 @@ public class RLPolicy {
                         GameObject enemy = new GameObject(type);
                         enemy.setPosition(new Vector2d(x, y));
                         enemies.add(enemy); // no copy needed
-                        reward -=0.1;
+                        reward +=0.1;
                     }
                 }
             }
@@ -282,9 +281,8 @@ public class RLPolicy {
             reward -=0.5;
         }
 
-       // System.out.println(Qval + alpha*(reward+ gamma * maxQval - Qval));
 
-        return Qval + alpha*(reward+ gamma * maxQval - Qval) ;
+        return Qval + alpha*(reward+ gamma * (maxQval - Qval)) ;
     }
 
 

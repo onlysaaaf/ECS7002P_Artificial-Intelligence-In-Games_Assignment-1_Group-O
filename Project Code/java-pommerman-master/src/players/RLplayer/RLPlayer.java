@@ -87,9 +87,7 @@ public class RLPlayer extends Player {
 
             for(Types.ACTIONS a : actions){
                 GameState next = policy.roll(copyState, a);
-//                System.out.println(" Current pos " + copyState.getPosition());
-//                System.out.println("Next pos " + next.getPosition());
-                if((next.getPosition().dist(optimalCord) < bestCord.dist(optimalCord))){ //compare distances
+                if((next.getPosition().dist(optimalCord) < bestCord.dist(optimalCord)) || policy.evaluate(next, RLLearner.qVals.get(next.getPosition()), Double.MAX_VALUE) >policy.evaluate(copyState, RLLearner.qVals.get(copyState.getPosition()), Double.MAX_VALUE) ){ //compare distances
                     bestCord = next.getPosition();
                     pickedAction = a;
                 }
@@ -102,18 +100,19 @@ public class RLPlayer extends Player {
                     bestPair = new Vector2d(bestStatePos.x,bestStatePos.y);
                 }
                 //if player not moved for 5 ticks make random move greedily
-                if(next.getPosition() == copyState.getPosition()){
-                    if(policy.evaluate(next,RLLearner.qVals.get(next.getPosition()),Double.MAX_VALUE) > policy.evaluate(copyState,RLLearner.qVals.get(copyState.getPosition()),Double.MAX_VALUE)){ //if action results in better qvalue return anyway
+                if(next.getPosition() == copyState.getPosition()) {
+                    if (policy.evaluate(next, RLLearner.qVals.get(next.getPosition()), Double.MAX_VALUE) > policy.evaluate(copyState, RLLearner.qVals.get(copyState.getPosition()), Double.MAX_VALUE)) { //if action results in better qvalue return anyway
                         return pickedAction;
-                    }
-                    notMovedFor ++; //We don't want the player to stand still for too long
-                    if(notMovedFor > max_ticks) {
-                        pickedAction = actions[random.nextInt(actions.length)];
-                        while(policy.evaluate(policy.roll(copyState,pickedAction), RLLearner.qVals.get(copyState.getPosition()), Double.MAX_VALUE) < RLLearner.qVals.get(copyState.getPosition())){ //compare random action to current pos value
-
+                    } else {
+                        notMovedFor++; //We don't want the player to stand still for too long
+                        if (notMovedFor > max_ticks) {
                             pickedAction = actions[random.nextInt(actions.length)];
+                            while (policy.evaluate(policy.roll(copyState, pickedAction), RLLearner.qVals.get(copyState.getPosition()), Double.MAX_VALUE) < RLLearner.qVals.get(copyState.getPosition())) { //compare random action to current pos value
+
+                                pickedAction = actions[random.nextInt(actions.length)];
+                            }
+                            notMovedFor = 0; //reset counter
                         }
-                        notMovedFor = 0; //reset counter
                     }
                 }
             }
