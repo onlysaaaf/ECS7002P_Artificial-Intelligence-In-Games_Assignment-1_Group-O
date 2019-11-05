@@ -92,7 +92,7 @@ public class   RLLearner {
             }
 
 
-            if(Types.DEFAULT_VISION_RANGE ==-1) {
+            if(Types.DEFAULT_VISION_RANGE ==-1) { //if full visibility then can search through whole board
                 for (int x = 0; x < Types.BOARD_SIZE; x++) {
                     for (int y = 0; y < Types.BOARD_SIZE; y++) {
                         Vector2d currentStatePos = new Vector2d(x, y);
@@ -105,8 +105,20 @@ public class   RLLearner {
                     }
                 }
             }else{
-                for (int x = copyState.getPosition().x; x < Types.DEFAULT_VISION_RANGE + copyState.getPosition().x; x++) {
+                for (int x = copyState.getPosition().x; x < Types.DEFAULT_VISION_RANGE + copyState.getPosition().x; x++) { //for partial visbility only search through vision range
                     for (int y = copyState.getPosition().y; y < Types.DEFAULT_VISION_RANGE +copyState.getPosition().y; y++) {
+                        Vector2d currentStatePos = new Vector2d(x, y);
+                        double q = policy.evaluate(policy.roll(copyState, actionsList.get(random.nextInt(actionsList.size()))), qVals.get(currentStatePos), Double.MAX_VALUE); //Update all qvalues in map by rolling and evaluating random action
+                        qVals.put(currentpos, q);
+                        if (q > bestQ) {
+                            bestQ = q;
+                        }
+
+                    }
+                }
+
+                for (int x = copyState.getPosition().x; x <= Types.DEFAULT_VISION_RANGE - copyState.getPosition().x; x--) { //for partial visbility only search through vision range
+                    for (int y = copyState.getPosition().y; y <= Types.DEFAULT_VISION_RANGE -copyState.getPosition().y; y--) {
                         Vector2d currentStatePos = new Vector2d(x, y);
                         double q = policy.evaluate(policy.roll(copyState, actionsList.get(random.nextInt(actionsList.size()))), qVals.get(currentStatePos), Double.MAX_VALUE); //Update all qvalues in map by rolling and evaluating random action
                         qVals.put(currentpos, q);
