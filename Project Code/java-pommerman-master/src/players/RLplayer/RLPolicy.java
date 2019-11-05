@@ -57,7 +57,7 @@ public class RLPolicy {
 
     public Double evaluate(GameState gs, double Qval, double maxQval){
         CustomHeuristic heuristic = new CustomHeuristic(gs);
-        //reward = heuristic.evaluateState(gs); //or implement custom hueristic
+        reward += heuristic.evaluateState(gs); //or implement custom hueristic
         Vector2d myPosition = gs.getPosition();
 
         Types.TILETYPE[][] board = gs.getBoard();
