@@ -21,7 +21,7 @@ public class RLPlayer extends Player {
     boolean loopedThrough = false;
     int forcedMoves = 0;
     int notMovedFor = 0;
-    int max_ticks = 100;
+    int max_ticks = 60;
 
 
 
@@ -89,11 +89,12 @@ public class RLPlayer extends Player {
                 }
                 //if player not moved for 5 ticks make random move greedily
                 if(next.getPosition() == copyState.getPosition()) {
-                    if (policy.evaluate(next, RLLearner.qVals.get(next.getPosition()), Double.MAX_VALUE) > policy.evaluate(copyState, RLLearner.qVals.get(copyState.getPosition()), Double.MAX_VALUE)) { //if action results in better qvalue return anyway
+                    if (policy.evaluate(next, RLLearner.qVals.get(next.getPosition()), Double.MAX_VALUE) > policy.evaluate(copyState, RLLearner.qVals.get(copyState.getPosition()), Double.MAX_VALUE) && notMovedFor <max_ticks) { //if action results in better qvalue return anyway
+                        notMovedFor++; //We don't want the player to stand still for too long
                         return pickedAction;
                     } else {
                         notMovedFor++; //We don't want the player to stand still for too long
-                        if (notMovedFor > max_ticks) {
+                        if (notMovedFor > max_ticks) { //return random action
                             pickedAction = actions[random.nextInt(actions.length)];
                             while (policy.evaluate(policy.roll(copyState, pickedAction), RLLearner.qVals.get(copyState.getPosition()), Double.MAX_VALUE) < RLLearner.qVals.get(copyState.getPosition())) { //compare random action to current pos value
 

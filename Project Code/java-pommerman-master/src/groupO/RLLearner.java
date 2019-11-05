@@ -68,7 +68,7 @@ public class   RLLearner {
         int acumTimeTaken = 0;
         int avgTimeTaken = 0;
         long remaining = 0;
-        int remainingLimit = 2;
+        int remainingLimit = 10;
 
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
         ect.setMaxTimeMillis(100);
@@ -76,7 +76,7 @@ public class   RLLearner {
 
 
         //int bestAction = 0;
-    Types.ACTIONS bestAction = null;
+    Types.ACTIONS bestAction = actionsList.get(random.nextInt(actionsList.size()));
         while (!stop) {
             for (Types.ACTIONS a : actionsList) {
                 GameState next = policy.roll(copyState, a);
