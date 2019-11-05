@@ -32,6 +32,7 @@ public class RLPlayer extends Player {
     boolean loopedThrough = false;
     int forcedMoves = 0;
     int notMovedFor = 0;
+    int max_ticks = 100;
 
 
 
@@ -61,7 +62,6 @@ public class RLPlayer extends Player {
 
     @Override
     public Types.ACTIONS act(GameState gs) {
-        //TODO
 
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
         ect.setMaxTimeMillis(params.num_time);
@@ -111,53 +111,30 @@ public class RLPlayer extends Player {
                 //if player not moved for 5 ticks make random move greedily
                 if(next.getPosition() == copyState.getPosition()){
                     notMovedFor ++;
-                    if(notMovedFor > 80) {
+                    if(notMovedFor > max_ticks) {
                         pickedAction = actions[random.nextInt(actions.length)];
-                        while(policy.evaluate(policy.roll(copyState,pickedAction), RLLearner.qVals.get(copyState.getPosition()), Double.MAX_VALUE) < RLLearner.qVals.get(copyState.getPosition())){
+                        while(policy.evaluate(policy.roll(copyState,pickedAction), RLLearner.qVals.get(copyState.getPosition()), Double.MAX_VALUE) < RLLearner.qVals.get(copyState.getPosition())){ //compare random action to current pos value
+
                             pickedAction = actions[random.nextInt(actions.length)];
                         }
-                        notMovedFor = 0;
-                        //forcedMoves++;
-                       // GameState next2 = policy.roll(copyState, pickedAction);
+                        notMovedFor = 0; //reset counter
 
-                        //condition to make so player doesn't kill itself
-//                        while (pickedAction == Types.ACTIONS.ACTION_BOMB && next2.getPosition() == next.getPosition()) {
-//                            pickedAction = actions[random.nextInt(actions.length)];
-//                        }
                     }
 
                 }
-//                if(pickedAction == Types.ACTIONS.ACTION_BOMB){
-//                    System.out.println("RL PLAYER PLANTED BOMB");
-//                }
 
 
-                //Log deaths in file
+
 
 
 
             }
 
-//        Types.TILETYPE[] aliveAgentIDs = currentState.getAliveAgentIDs();
-//        boolean isDead = true;
-//        for(Types.TILETYPE agent: aliveAgentIDs){
-//            System.out.println(agent.getKey());
-//            if(agent.getKey() == this.getPlayerID()){
-//                isDead = false;
-//            }
-//
-//        }
-//        if(isDead && !loopedThrough) {
-//            try (FileWriter fw = new FileWriter(deathFile)) {
-//                fw.write("Death at: " + currentState.getPosition());
-//                fw.flush();
-//                loopedThrough = true;
-//            } catch (IOException ex) {
-//            }
-//
-//
-//        }
 
+
+            if(pickedAction == null){ //as a final resort return a completley random action
+                pickedAction = actions[random.nextInt(actions.length)];
+            }
             return pickedAction;
 
 

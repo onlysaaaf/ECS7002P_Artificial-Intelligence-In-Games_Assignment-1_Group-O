@@ -22,9 +22,9 @@ public class RLPolicy {
     Types.ACTIONS[] actions;
     Random r = new Random();
 
-    private double alpha = 0.1; //Learning rate
-    private double gamma = 0.2; //Eagerness
-    private double reward = 0;
+    private double alpha = 0.05; //Learning rate
+    private double gamma = 0.1; //Eagerness
+    private double reward = Double.MIN_VALUE;
     private ArrayList<Double> qValues = new ArrayList<>();
     private ArrayList<GameState> states = new ArrayList<>();
     private Random random = new Random();
@@ -87,7 +87,6 @@ public class RLPolicy {
     public Double evaluate(GameState gs, double Qval, double maxQval){
         CustomHeuristic heuristic = new CustomHeuristic(gs);
         reward = heuristic.evaluateState(gs); //or implement custom hueristic
-        //Our own hueristic
         Vector2d myPosition = gs.getPosition();
 
         Types.TILETYPE[][] board = gs.getBoard();
@@ -148,7 +147,7 @@ public class RLPolicy {
         if(!unsafeDirections.isEmpty()){
 
             ArrayList<Types.DIRECTIONS> directions = findSafeDirections(board, myPosition, unsafeDirections, bombs, enemies);
-
+            reward +=0.4;
             if(!directions.isEmpty()) {
                 //return directionToAction(directions.get(random.nextInt(directions.size())));
                 reward -=0.2;
@@ -312,6 +311,9 @@ public class RLPolicy {
 
         Queue<Vector2d> Q = new LinkedList<>();
 
+        if(Types.DEFAULT_VISION_RANGE !=-1){
+            depth = Types.DEFAULT_VISION_RANGE;
+        }
         for(int r = max(0, myPosition.x - depth); r < min(board.length, myPosition.x + depth); r++){
             for(int c = max(0, myPosition.y - depth); c < min(board.length, myPosition.y + depth); c++){
 
@@ -635,6 +637,7 @@ public class RLPolicy {
                 ArrayList<Vector2d> items_list = objects.get(enemy.getType());
                 for (Vector2d position : items_list) {
                     if (dist.get(position) == 1)
+                        reward +=0.1; //increase reward for getting closer to enemy
                         return true;
                 }
             }
