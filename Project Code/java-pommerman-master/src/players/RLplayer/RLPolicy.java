@@ -20,7 +20,7 @@ import static utils.Utils.getDirection;
 
 public class RLPolicy {
     Types.ACTIONS[] actions;
-    Random r = new Random();
+    private Random r = new Random();
 
     private double alpha = 0.05; //Learning rate
     private double gamma = 0.1; //Eagerness
@@ -30,34 +30,6 @@ public class RLPolicy {
     private Random random = new Random();
     private ArrayList<Vector2d> recentlyVisitedPositions = new ArrayList<>();
     private int recentlyVisitedLength = 0;
-
-    public double getPolicyFromState(GameState g){
-        ArrayList<Types.ACTIONS> actionsList = Types.ACTIONS.all();
-        actions = new Types.ACTIONS[actionsList.size()];
-        double maxQVal = Double.MAX_VALUE;
-        double Qval = Double.MIN_VALUE;
-        GameState sPrime = null;
-        GameState copy = g.copy();
-
-        for(int i =0; i<actions.length; ++i){
-            GameState next = (roll(copy,actions[i]));
-            states.add(next);
-            Qval = evaluate(next,Qval,maxQVal);
-            qValues.add(Qval);
-            if(Qval > maxQVal)
-                maxQVal = Qval;
-            if (next.isTerminal()){
-                sPrime = next;
-                break;
-            }
-
-        }
-
-
-        //pick action to move to state that has maximum Q value
-
-        return maxQVal;
-    }
 
     public GameState roll(GameState gs, Types.ACTIONS act)
     {
