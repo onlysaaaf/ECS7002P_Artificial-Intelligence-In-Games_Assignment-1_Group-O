@@ -100,13 +100,13 @@ public class RLPlayer extends Player {
                     pickedAction = a;
                     bestStatePos = bestState.getPosition();
                     bestPair = new Vector2d(bestStatePos.x,bestStatePos.y);
-
-
                 }
-
                 //if player not moved for 5 ticks make random move greedily
                 if(next.getPosition() == copyState.getPosition()){
-                    notMovedFor ++;
+                    if(policy.evaluate(next,RLLearner.qVals.get(next.getPosition()),Double.MAX_VALUE) > policy.evaluate(copyState,RLLearner.qVals.get(copyState.getPosition()),Double.MAX_VALUE)){ //if action results in better qvalue return anyway
+                        return pickedAction;
+                    }
+                    notMovedFor ++; //We don't want the player to stand still for too long
                     if(notMovedFor > max_ticks) {
                         pickedAction = actions[random.nextInt(actions.length)];
                         while(policy.evaluate(policy.roll(copyState,pickedAction), RLLearner.qVals.get(copyState.getPosition()), Double.MAX_VALUE) < RLLearner.qVals.get(copyState.getPosition())){ //compare random action to current pos value
@@ -114,9 +114,7 @@ public class RLPlayer extends Player {
                             pickedAction = actions[random.nextInt(actions.length)];
                         }
                         notMovedFor = 0; //reset counter
-
                     }
-
                 }
             }
             if(pickedAction == null){ //as a last resort return a random action
