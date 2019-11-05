@@ -63,21 +63,17 @@ public class RLPlayer extends Player {
     @Override
     public Types.ACTIONS act(GameState gs) {
 
-        ElapsedCpuTimer ect = new ElapsedCpuTimer();
-        ect.setMaxTimeMillis(params.num_time);
 
-        // Number of actions available
-        int num_actions = actions.length;
         currentState = gs;
         GameState copyState = currentState.copy();
 
-        learner.learn(copyState);
+        learner.learn(copyState); //make learner learn
 
             Double bestQVal = Double.MIN_VALUE;
             Vector2d optimalCord = new Vector2d(0,0);
             for (Map.Entry<Vector2d, Double> entry : RLLearner.qVals.entrySet()) {
                 if(entry.getValue() > bestQVal){
-                    bestQVal = entry.getValue();
+                    bestQVal = entry.getValue(); //record best Qval and optimal cord for pathfinding
                     optimalCord = entry.getKey();
                 }
             }
@@ -122,17 +118,8 @@ public class RLPlayer extends Player {
                     }
 
                 }
-
-
-
-
-
-
             }
-
-
-
-            if(pickedAction == null){ //as a final resort return a completley random action
+            if(pickedAction == null){ //as a last resort return a random action
                 pickedAction = actions[random.nextInt(actions.length)];
             }
             return pickedAction;

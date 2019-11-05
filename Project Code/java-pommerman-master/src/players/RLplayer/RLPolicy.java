@@ -23,7 +23,7 @@ public class RLPolicy {
     Random r = new Random();
 
     private double alpha = 0.05; //Learning rate
-    private double gamma = 0.1; //Eagerness
+    private double gamma = 0.01; //Eagerness
     private double reward = Double.MIN_VALUE;
     private ArrayList<Double> qValues = new ArrayList<>();
     private ArrayList<GameState> states = new ArrayList<>();
@@ -154,14 +154,14 @@ public class RLPolicy {
             }
             else {
                 //return Types.ACTIONS.ACTION_STOP;
-                reward+=0.1;
+                reward-=0.1;
             }
         }
 
         // 3) Lay bomb if we are adjacent to an enemy.
         if(isAdjacentEnemy(items, dist, enemies) && maybeBomb(ammo, blastStrength, items, dist, myPosition)){
             //return Types.ACTIONS.ACTION_BOMB;
-            reward +=0.1;
+            reward +=0.4;
         }
 
         //  4) Move towards an enemy if there is one in exactly three reachable spaces.
@@ -209,11 +209,11 @@ public class RLPolicy {
             // iterate until we get to the immadiate next node
             if (myPosition.equals(previousNode)){
                 //return directionToAction(getDirection(myPosition, previousNode));
-                reward -=0.1;
+                reward +=0.05;
             }
             while (!myPosition.equals(prev.get(previousNode))){ ;
                 previousNode = prev.get(previousNode);
-                reward +=0.1;
+                reward -=0.1;
             }
             //return directionToAction(getDirection(myPosition, previousNode));
         }
