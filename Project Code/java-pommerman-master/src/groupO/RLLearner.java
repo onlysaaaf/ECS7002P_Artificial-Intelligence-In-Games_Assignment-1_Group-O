@@ -64,13 +64,11 @@ public class   RLLearner {
         Vector2d currentPair = new Vector2d(currentx,currenty);
         double Qval = qVals.get(currentPair);
         boolean stop = false;
-        int index = 0;
         int numIters = 0;
         int acumTimeTaken = 0;
         int avgTimeTaken = 0;
         long remaining = 0;
-        int remainingLimit = 5;
-        int fmCallsCount = 0;
+        int remainingLimit = 2;
 
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
         ect.setMaxTimeMillis(100);
@@ -118,6 +116,8 @@ public class   RLLearner {
 //
                     }
 
+                    break;
+
             }
 
             if (params.stop_type == params.STOP_TIME) {
@@ -126,12 +126,6 @@ public class   RLLearner {
                 avgTimeTaken = acumTimeTaken / numIters;
                 remaining = ect.remainingTimeMillis();
                 stop = remaining <= 2 * avgTimeTaken || remaining <= remainingLimit;
-            } else if (params.stop_type == params.STOP_ITERATIONS) {
-                numIters++;
-                stop = numIters >= params.num_iterations;
-            } else if (params.stop_type == params.STOP_FMCALLS) {
-                fmCallsCount += params.rollout_depth;
-                stop = (fmCallsCount + params.rollout_depth) > params.num_fmcalls;
             }
         }
 

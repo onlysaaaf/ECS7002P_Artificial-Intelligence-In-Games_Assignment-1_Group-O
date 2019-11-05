@@ -11,10 +11,10 @@ import java.util.Map;
 public class RLParams implements ParameterSet {
 
     // Constants
-    public final double HUGE_NEGATIVE = -1000;
-    public final double HUGE_POSITIVE =  1000;
+ //   public final double HUGE_NEGATIVE = -1000;
+ //   public final double HUGE_POSITIVE =  1000;
 
-    public final int STOP_TIME = 0;
+    public final int STOP_TIME = 100;
     public final int STOP_ITERATIONS = 1;
     public final int STOP_FMCALLS = 2;
 
