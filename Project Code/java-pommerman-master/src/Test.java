@@ -1,7 +1,6 @@
 import core.Game;
 import players.*;
-import players.RLplayer.RLPlayer;
-import utils.Pair;
+import groupO.RLPlayer;
 import utils.Types;
 import players.rhea.utils.Constants;
 import players.mcts.MCTSPlayer;
@@ -11,7 +10,6 @@ import players.rhea.utils.RHEAParams;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Test {
 

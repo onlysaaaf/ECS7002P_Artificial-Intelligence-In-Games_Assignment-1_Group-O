@@ -1,21 +1,17 @@
-package players.RLplayer;
+package groupO;
 
 import core.GameState;
 import objects.Bomb;
 import objects.GameObject;
-import players.SimplePlayer;
 import players.heuristics.CustomHeuristic;
-import players.heuristics.WinScoreHeuristic;
 import utils.Types;
 import utils.Vector2d;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import static utils.Utils.*;
 import static java.lang.Math.*;
 
 
-import static utils.Utils.directionToAction;
 import static utils.Utils.getDirection;
 
 public class RLPolicy {

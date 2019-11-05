@@ -1,22 +1,12 @@
-package players.RLplayer;
+package groupO;
 
 import core.GameState;
 import players.Player;
-import players.heuristics.AdvancedHeuristic;
-import players.heuristics.CustomHeuristic;
-import players.mcts.SingleTreeNode;
-import utils.ElapsedCpuTimer;
-import utils.Pair;
 import utils.Types;
 import utils.Vector2d;
 
-import javax.swing.*;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.security.Policy;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class RLPlayer extends Player {
@@ -24,7 +14,6 @@ public class RLPlayer extends Player {
     private Random random;
     private GameState currentState;
     private Types.ACTIONS[] actions;
-    RLParams params;
     RLLearner learner;
     RLPolicy policy;
     File deathFileDir = new File(".");
@@ -46,7 +35,6 @@ public class RLPlayer extends Player {
         random = new Random();
         ArrayList<Types.ACTIONS> actionsList = Types.ACTIONS.all();
         actions = new Types.ACTIONS[actionsList.size()];
-        params = new RLParams();
         learner = new RLLearner(this.currentState);
         policy = new RLPolicy();
         //System.out.println(RLLearner.qVals.isEmpty());

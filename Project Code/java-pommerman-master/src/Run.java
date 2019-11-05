@@ -1,7 +1,6 @@
 import core.Game;
 import players.*;
-import players.RLplayer.RLLearner;
-import players.RLplayer.RLPlayer;
+import groupO.RLPlayer;
 import players.mcts.MCTSParams;
 import players.mcts.MCTSPlayer;
 import players.rhea.RHEAPlayer;
