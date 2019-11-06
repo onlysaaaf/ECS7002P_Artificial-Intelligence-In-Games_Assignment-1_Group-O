@@ -11,7 +11,7 @@ import utils.*;
 import java.util.*;
 
 import static utils.Types.VISUALS;
-
+import java.io.PrintStream;
 public class Run {
 
     private static void printHelp()
@@ -40,6 +40,14 @@ public class Run {
         if(args.length != 8) {
             printHelp();
             return;
+        }
+        try
+        {
+            PrintStream ps = new PrintStream("./log.txt");
+            System.setOut(ps);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
 
         try {

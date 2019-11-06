@@ -10,7 +10,7 @@ import players.rhea.utils.RHEAParams;
 
 
 import java.util.ArrayList;
-
+import java.io.PrintStream;
 public class Test {
 
     public static void main(String[] args) {
@@ -39,6 +39,14 @@ public class Test {
             }
    */
         Game game = new Game(seed, boardSize, Types.GAME_MODE.FFA, "");
+        try
+        {
+            PrintStream ps = new PrintStream("./log.txt");
+            System.setOut(ps);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Key controllers for human player s (up to 2 so far).
         KeyController ki1 = new KeyController(true);

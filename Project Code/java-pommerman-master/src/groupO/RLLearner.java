@@ -74,7 +74,7 @@ public class   RLLearner {
         ect.setMaxTimeMillis(100);
      ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
 
-
+        //System.out.println("enter learn ");
         //int bestAction = 0;
     Types.ACTIONS bestAction = actionsList.get(random.nextInt(actionsList.size()));
         while (!stop) {
@@ -147,6 +147,7 @@ public class   RLLearner {
                     try {
                         FileWriter fw = new FileWriter(deathFile);
                         fw.write("Death of player at " + copyState.getPosition().toString());
+                        System.out.println("Death of player at " + copyState.getPosition().toString());
                    } catch (Exception e) {
                         e.printStackTrace();
                     }
