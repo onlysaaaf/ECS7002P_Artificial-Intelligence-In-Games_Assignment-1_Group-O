@@ -41,14 +41,16 @@ public class Run {
             printHelp();
             return;
         }
-        try
-        {
-            PrintStream ps = new PrintStream("./log.txt");
-            System.setOut(ps);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        //Only used to write death positions to file, no longer needed now
+//        try
+//        {
+//            PrintStream ps = new PrintStream("./log.txt");
+//            System.setOut(ps);
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         try {
 
@@ -135,6 +137,7 @@ public class Run {
                     case 6:
                         p = new RLPlayer(seed,playerID++);
                         playerStr[i-4] = "RL Player";
+                        break;
                     default:
                         System.out.println("WARNING: Invalid agent ID: " + agentType );
 

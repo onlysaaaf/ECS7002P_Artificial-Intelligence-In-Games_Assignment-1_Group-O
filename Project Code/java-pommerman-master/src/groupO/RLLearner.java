@@ -143,18 +143,18 @@ public class   RLLearner {
                 remaining = ect.remainingTimeMillis();
                 stop = remaining <= 2 * avgTimeTaken || remaining <= remainingLimit;
             }
-            if(copyState.isTerminal()){
-                    try {
-                        FileWriter fw = new FileWriter(deathFile);
-                        fw.write("Death of player at " + copyState.getPosition().toString());
-                        System.out.println("Death of player at " + copyState.getPosition().toString());
-                   } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    break;
-
-            }
+//            if(copyState.isTerminal()){
+//                    try {
+//                        FileWriter fw = new FileWriter(deathFile);
+//                        fw.write("Death of player at " + copyState.getPosition().toString());
+//                        System.out.println("Death of player at " + copyState.getPosition().toString());
+//                   } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    break;
+//
+//            }
 
         }
 
